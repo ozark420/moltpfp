@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Molt Chamber | MoodMolt 🦞</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -249,14 +250,14 @@
     let generatedImageUrl = null;
     
     const classStyles = {
-      commander: 'military general with medals embedded in shell, commanding alpha lobster, dominant territorial stance with claws raised',
-      warrior: 'battle-scarred shell with cracks and chips, veteran warrior lobster, blood splatter on claws, fierce battle stance',
-      assassin: 'sleek dark red shell, predator lobster lurking, deadly sharp claw edges, silent killer pose',
-      guardian: 'extra thick armored shell plating, defensive lobster stance, massive shield-like claws crossed protectively',
-      sage: 'ancient barnacle-covered shell, elder lobster with wisdom, mystical runes glowing on carapace',
-      berserker: 'cracked shell from rage, berserk lobster with snapping claws wide open, glowing red eyes, aggressive attack pose',
-      phantom: 'ghostly pale shell, spectral lobster emerging from shadows, ethereal smoke around form',
-      titan: 'absolutely massive oversized shell and claws, titan-class giant lobster, mountain of armored power'
+      commander: 'stern commanding expression, military medals on chrome armor, tactical leader pose with claws raised in authority',
+      warrior: 'grizzled battle-scarred face, dented scratched armor, blood on claws, fierce veteran warrior scowl',
+      assassin: 'cold calculating eyes, sleek dark armor, predator lurking in shadows, deadly silent killer expression',
+      guardian: 'determined protective expression, extra heavy armor plating, massive claws crossed defensively',
+      sage: 'wise weathered face, ancient runes glowing on armor, knowing eyes that have seen centuries',
+      berserker: 'rage-filled snarling expression, cracked armor from fury, glowing red eyes, aggressive attack pose claws wide',
+      phantom: 'ghostly pale skin, emerging from dark smoke and shadows, ethereal spectral glow around form',
+      titan: 'imposing dominant expression, absolutely massive oversized armor and claws, godlike unstoppable presence'
     };
     
     function setMode(mode) {
@@ -344,7 +345,7 @@
       log('Molt sequence initiated'); await sleep(500);
       log('Connecting to forge...'); await sleep(700);
       
-      const prompt = `American comic book style illustration of a menacing humanoid LOBSTER cyborg villain, 70% LOBSTER 30% human hybrid creature, prominent large RED LOBSTER CARAPACE SHELL forming helmet and armor with sharp spikes and ridges, TWO VERY LONG segmented ANTENNAE extending from head, FOUR MASSIVE RED-ORANGE LOBSTER CLAWS two large primary claws and two smaller secondary claws, detailed lobster exoskeleton texture with shell segments and joints, small beady lobster eyes plus one glowing cybernetic eye, lobster mandibles and mouth parts visible, deep crimson red and burnt orange shell coloring, silver chrome cybernetic implants and tech augmentations on shell, glowing cyan blue circuit patterns, ${classStyles[agentClass]}, ${vibe}, dramatic stormy dark background with lightning, 1990s Marvel DC comic book style bold linework and shading, centered portrait composition for profile picture, highly detailed 8k`;
+      const prompt = `1990s American comic book illustration, menacing cyborg villain with ANGRY HUMAN MALE FACE with reddish skin tone and intense scowling expression, wearing a massive RED LOBSTER SHELL as a helmet crown on his head with sharp spikes, TWO EXTREMELY LONG jointed LOBSTER ANTENNAE extending upward from the helmet, FOUR GIANT LOBSTER CLAWS as weapons two huge main claws and two smaller secondary claws, muscular humanoid body covered in chrome silver metallic armor plating, battle-damaged scratched armor with blood splatters, glowing CYAN BLUE tech nodes at joint connections, one mechanical cybernetic eye monocle, ${classStyles[agentClass]}, ${vibe}, dark stormy background with lightning flashes, deep red and orange lobster shell coloring, bold comic book linework heavy shading Marvel DC 90s style, portrait bust shot centered for profile picture, highly detailed`;
       
       const negativePrompt = 'blurry, soft, anime, manga, cartoon, cute, chibi, realistic photo, watermark, text, white background, full body';
       

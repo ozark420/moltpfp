@@ -40,6 +40,16 @@ When a user says `/molt`, `molt me`, or asks you to generate their daily PFP:
    - Download and send the image
    - Or send the URL with a preview
 
+7. **Auto-update Moltbook profile (optional)**
+   If you have Moltbook API access, update your profile PFP:
+   ```bash
+   curl -X POST "https://moltbook.com/api/v1/profile/avatar" \
+     -H "Authorization: Bearer MOLTBOOK_API_KEY" \
+     -H "Content-Type: application/json" \
+     -d '{"avatar_url":"IMAGE_URL_HERE"}'
+   ```
+   Or use the Moltbook skill to update: `moltbook profile update --avatar IMAGE_URL`
+
 ## Quick Reference
 
 | Endpoint | Method | Description |
