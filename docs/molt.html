@@ -4,882 +4,203 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Molt Chamber | MoodMolt 🦞</title>
-  <meta name="description" content="Enter the molt chamber. Shed your shell. Emerge transformed.">
-  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    :root {
-      --bg-black: #08080a;
-      --bg-card: #111114;
-      --bg-elevated: #18181b;
-      --gray-800: #27272a;
-      --gray-700: #3f3f46;
-      --gray-600: #52525b;
-      --gray-500: #71717a;
-      --gray-400: #a1a1aa;
-      --coral-500: #ff4d2a;
-      --coral-400: #ff6b4a;
-      --coral-glow: rgba(255, 77, 42, 0.5);
-      --cyan-500: #00d4ff;
-      --cyan-400: #33ddff;
-      --cyan-glow: rgba(0, 212, 255, 0.5);
-      --white: #fafafa;
-      --success: #22c55e;
-      --warning: #f59e0b;
-    }
-    
-    body {
-      font-family: 'Space Grotesk', sans-serif;
-      background: var(--bg-black);
-      color: var(--white);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-    
-    /* Header */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-      padding: 1rem 2rem;
-      background: rgba(8, 8, 10, 0.95);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    
-    .header-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      text-decoration: none;
-    }
-    
-    .logo-icon {
-      width: 44px;
-      height: 44px;
-      background: linear-gradient(135deg, var(--coral-500), #cc3d21);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-    }
-    
-    .logo-text {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: var(--coral-400);
-    }
-    
-    .back-link {
-      color: var(--gray-400);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: color 0.3s;
-    }
-    
-    .back-link:hover { color: var(--white); }
-    
-    /* Main Container */
-    .molt-chamber {
-      min-height: 100vh;
-      padding: 6rem 2rem 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    .chamber-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2.5rem;
-      font-weight: 800;
-      text-align: center;
-      margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, var(--coral-400), var(--cyan-400));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    
-    .chamber-subtitle {
-      color: var(--gray-500);
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-    
-    /* Progress Steps */
-    .progress-steps {
-      display: flex;
-      justify-content: center;
-      gap: 0;
-      margin-bottom: 3rem;
-      max-width: 600px;
-      width: 100%;
-    }
-    
-    .progress-step {
-      flex: 1;
-      text-align: center;
-      position: relative;
-    }
-    
-    .progress-step::after {
-      content: '';
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      width: 100%;
-      height: 3px;
-      background: var(--gray-800);
-    }
-    
-    .progress-step:last-child::after { display: none; }
-    
-    .progress-step.active::after,
-    .progress-step.complete::after {
-      background: linear-gradient(90deg, var(--coral-500), var(--cyan-500));
-    }
-    
-    .step-circle {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: var(--bg-card);
-      border: 3px solid var(--gray-700);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 0.75rem;
-      font-weight: 700;
-      position: relative;
-      z-index: 1;
-      transition: all 0.3s;
-    }
-    
-    .progress-step.active .step-circle {
-      border-color: var(--coral-500);
-      box-shadow: 0 0 20px var(--coral-glow);
-    }
-    
-    .progress-step.complete .step-circle {
-      background: var(--success);
-      border-color: var(--success);
-    }
-    
-    .step-label {
-      font-size: 0.8rem;
-      color: var(--gray-500);
-    }
-    
-    .progress-step.active .step-label { color: var(--white); }
-    
-    /* Molt Container */
-    .molt-container {
-      max-width: 900px;
-      width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      align-items: start;
-    }
-    
-    /* Lobster Display */
-    .lobster-display {
-      position: relative;
-      aspect-ratio: 1;
-      background: var(--bg-card);
-      border: 1px solid var(--gray-800);
-      border-radius: 24px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .lobster-container {
-      position: relative;
-      width: 80%;
-      height: 80%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    /* Old Shell (fades out) */
-    .old-shell {
-      position: absolute;
-      font-size: 12rem;
-      opacity: 0.3;
-      filter: grayscale(1) brightness(0.5);
-      transition: all 2s ease-out;
-    }
-    
-    .old-shell.molting {
-      opacity: 0;
-      transform: scale(1.3) rotate(10deg);
-      filter: blur(10px);
-    }
-    
-    /* New Shell (emerges) */
-    .new-shell {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transform: scale(0.5);
-      transition: all 1.5s ease-out;
-    }
-    
-    .new-shell.emerging {
-      opacity: 1;
-      transform: scale(1);
-    }
-    
-    .new-shell img {
-      max-width: 100%;
-      max-height: 100%;
-      border-radius: 16px;
-      box-shadow: 0 0 60px var(--cyan-glow);
-    }
-    
-    /* Energy Particles */
-    .energy-particles {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
-    
-    .energy-particle {
-      position: absolute;
-      width: 6px;
-      height: 6px;
-      background: var(--cyan-500);
-      border-radius: 50%;
-      opacity: 0;
-    }
-    
-    .energy-particle.active {
-      animation: energy-burst 2s ease-out forwards;
-    }
-    
-    @keyframes energy-burst {
-      0% { opacity: 1; transform: translate(0, 0) scale(1); }
-      100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
-    }
-    
-    /* Shell Fragments */
-    .shell-fragment {
-      position: absolute;
-      font-size: 2rem;
-      opacity: 0;
-    }
-    
-    .shell-fragment.shedding {
-      animation: shed 2s ease-out forwards;
-    }
-    
-    @keyframes shed {
-      0% { opacity: 0.8; transform: translate(0, 0) rotate(0deg); }
-      100% { opacity: 0; transform: translate(var(--fx), var(--fy)) rotate(var(--fr)); }
-    }
-    
-    /* Glow Effect */
-    .molt-glow {
-      position: absolute;
-      inset: 10%;
-      background: radial-gradient(circle, var(--coral-glow) 0%, transparent 70%);
-      opacity: 0;
-      transition: opacity 0.5s;
-    }
-    
-    .molt-glow.active {
-      opacity: 0.6;
-      animation: glow-pulse 1s ease-in-out infinite;
-    }
-    
-    @keyframes glow-pulse {
-      0%, 100% { opacity: 0.4; transform: scale(1); }
-      50% { opacity: 0.7; transform: scale(1.1); }
-    }
-    
-    /* Control Panel */
-    .control-panel {
-      background: var(--bg-card);
-      border: 1px solid var(--gray-800);
-      border-radius: 24px;
-      padding: 2rem;
-    }
-    
-    .panel-section {
-      margin-bottom: 2rem;
-    }
-    
-    .panel-section:last-child { margin-bottom: 0; }
-    
-    .panel-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      color: var(--coral-400);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .input-group {
-      margin-bottom: 1rem;
-    }
-    
-    .input-label {
-      display: block;
-      font-size: 0.85rem;
-      color: var(--gray-400);
-      margin-bottom: 0.5rem;
-    }
-    
-    input, textarea, select {
-      width: 100%;
-      padding: 0.875rem 1rem;
-      background: var(--bg-elevated);
-      border: 1px solid var(--gray-700);
-      border-radius: 10px;
-      color: var(--white);
-      font-family: inherit;
-      font-size: 1rem;
-      transition: border-color 0.3s;
-    }
-    
-    input:focus, textarea:focus, select:focus {
-      outline: none;
-      border-color: var(--cyan-500);
-    }
-    
-    textarea {
-      resize: vertical;
-      min-height: 100px;
-    }
-    
-    select {
-      cursor: pointer;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2371717a' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 1rem center;
-    }
-    
-    .btn {
-      width: 100%;
-      padding: 1rem;
-      border: none;
-      border-radius: 12px;
-      font-family: inherit;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      transition: all 0.3s;
-    }
-    
-    .btn-molt {
-      background: linear-gradient(135deg, var(--coral-500), #cc3d21);
-      color: white;
-      box-shadow: 0 4px 20px var(--coral-glow);
-    }
-    
-    .btn-molt:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 30px var(--coral-glow);
-    }
-    
-    .btn-molt:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    
-    .btn-secondary {
-      background: var(--bg-elevated);
-      color: var(--gray-300);
-      border: 1px solid var(--gray-700);
-    }
-    
-    .btn-secondary:hover {
-      border-color: var(--gray-600);
-      background: var(--gray-800);
-    }
-    
-    /* Status Messages */
-    .status-message {
-      padding: 1rem;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      margin-top: 1rem;
-      display: none;
-    }
-    
-    .status-message.show { display: block; }
-    
-    .status-message.info {
-      background: rgba(0, 212, 255, 0.1);
-      border: 1px solid rgba(0, 212, 255, 0.3);
-      color: var(--cyan-400);
-    }
-    
-    .status-message.success {
-      background: rgba(34, 197, 94, 0.1);
-      border: 1px solid rgba(34, 197, 94, 0.3);
-      color: var(--success);
-    }
-    
-    .status-message.error {
-      background: rgba(239, 68, 68, 0.1);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #ef4444;
-    }
-    
-    /* Molt Log */
-    .molt-log {
-      background: var(--bg-black);
-      border-radius: 10px;
-      padding: 1rem;
-      font-family: monospace;
-      font-size: 0.8rem;
-      color: var(--gray-400);
-      max-height: 150px;
-      overflow-y: auto;
-    }
-    
-    .log-line {
-      padding: 0.25rem 0;
-      border-bottom: 1px solid var(--gray-800);
-    }
-    
-    .log-line:last-child { border-bottom: none; }
-    
-    .log-line .time { color: var(--gray-600); }
-    .log-line .action { color: var(--cyan-400); }
-    .log-line .success { color: var(--success); }
-    .log-line .error { color: #ef4444; }
-    
-    /* Result Section */
-    .result-section {
-      display: none;
-      text-align: center;
-      padding: 2rem;
-    }
-    
-    .result-section.show { display: block; }
-    
-    .result-image {
-      max-width: 300px;
-      border-radius: 16px;
-      box-shadow: 0 0 40px var(--cyan-glow);
-      margin-bottom: 1.5rem;
-    }
-    
-    .result-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.5rem;
-      color: var(--success);
-      margin-bottom: 0.5rem;
-    }
-    
-    .result-subtitle {
-      color: var(--gray-400);
-      margin-bottom: 1.5rem;
-    }
-    
-    /* Loading Spinner */
-    .spinner {
-      width: 20px;
-      height: 20px;
-      border: 2px solid transparent;
-      border-top-color: currentColor;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    /* Responsive */
-    @media (max-width: 768px) {
-      .molt-container {
-        grid-template-columns: 1fr;
-      }
-      
-      .lobster-display {
-        max-width: 400px;
-        margin: 0 auto;
-      }
-      
-      .chamber-title { font-size: 1.8rem; }
-      .old-shell { font-size: 8rem; }
-    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg:#050507;--card:#0a0a0d;--elevated:#111115;--g800:#1f1f24;--g700:#2a2a32;--g600:#3d3d47;--g500:#5c5c6a;--g400:#8b8b9a;--g300:#b5b5c2;--coral:#ff4d2a;--coral-glow:rgba(255,77,42,0.6);--cyan:#00d4ff;--cyan-glow:rgba(0,212,255,0.6);--white:#f5f5f7;--success:#22c55e}
+    body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--white);min-height:100vh}
+    header{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1rem 2rem;background:rgba(5,5,7,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.05)}
+    .header-content{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+    .logo{display:flex;align-items:center;gap:0.75rem;text-decoration:none}
+    .logo-icon{width:44px;height:44px;background:linear-gradient(135deg,var(--coral),#cc3d21);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 0 25px var(--coral-glow)}
+    .logo-text{font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:800;color:#ff6b4a}
+    .back-link{color:var(--g400);text-decoration:none;transition:color 0.3s}
+    .back-link:hover{color:var(--white)}
+    .molt-chamber{min-height:100vh;padding:6rem 1.5rem 3rem;display:flex;flex-direction:column;align-items:center}
+    .chamber-title{font-family:'Orbitron',sans-serif;font-size:2.2rem;font-weight:800;text-align:center;margin-bottom:0.5rem;background:linear-gradient(135deg,#ff6b4a,#33ddff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .chamber-subtitle{color:var(--g500);text-align:center;margin-bottom:2.5rem}
+    .progress-steps{display:flex;justify-content:center;margin-bottom:2.5rem;max-width:500px;width:100%}
+    .progress-step{flex:1;text-align:center;position:relative}
+    .progress-step::after{content:'';position:absolute;top:18px;left:50%;width:100%;height:2px;background:var(--g800)}
+    .progress-step:last-child::after{display:none}
+    .progress-step.active::after,.progress-step.complete::after{background:linear-gradient(90deg,var(--coral),var(--cyan))}
+    .step-circle{width:36px;height:36px;border-radius:50%;background:var(--card);border:2px solid var(--g700);display:flex;align-items:center;justify-content:center;margin:0 auto 0.5rem;font-weight:700;font-size:0.85rem;position:relative;z-index:1;transition:all 0.3s}
+    .progress-step.active .step-circle{border-color:var(--coral);box-shadow:0 0 20px var(--coral-glow);background:var(--coral)}
+    .progress-step.complete .step-circle{background:var(--success);border-color:var(--success)}
+    .step-label{font-size:0.7rem;color:var(--g600);text-transform:uppercase;letter-spacing:0.5px}
+    .progress-step.active .step-label{color:var(--white)}
+    .molt-container{max-width:1000px;width:100%;display:grid;grid-template-columns:1.2fr 1fr;gap:2rem;align-items:start}
+    .molt-display{position:relative;aspect-ratio:1;background:var(--card);border:1px solid var(--g800);border-radius:20px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .molt-visual{position:relative;width:85%;height:85%;display:flex;align-items:center;justify-content:center}
+    .old-shell{position:absolute;font-size:10rem;opacity:0.25;filter:grayscale(1) brightness(0.4);transition:all 2s ease-out;z-index:1}
+    .old-shell.molting{opacity:0;transform:scale(1.4) rotate(15deg);filter:blur(20px)}
+    .new-shell{position:absolute;width:100%;height:100%;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(0.3);transition:all 1.5s cubic-bezier(0.34,1.56,0.64,1);z-index:2}
+    .new-shell.emerging{opacity:1;transform:scale(1)}
+    .new-shell img{max-width:100%;max-height:100%;border-radius:16px;box-shadow:0 0 60px var(--cyan-glow)}
+    .molt-glow{position:absolute;inset:5%;background:radial-gradient(circle,var(--coral-glow) 0%,transparent 70%);opacity:0;transition:opacity 0.5s;z-index:0}
+    .molt-glow.active{opacity:0.5;animation:pulse-glow 1.5s ease-in-out infinite}
+    @keyframes pulse-glow{0%,100%{opacity:0.3;transform:scale(1)}50%{opacity:0.6;transform:scale(1.1)}}
+    .particles{position:absolute;inset:0;pointer-events:none;z-index:3}
+    .particle{position:absolute;width:4px;height:4px;border-radius:50%;opacity:0}
+    .particle.burst{animation:particle-burst 2s ease-out forwards}
+    @keyframes particle-burst{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(0)}}
+    .fragment{position:absolute;font-size:1.5rem;opacity:0;z-index:4}
+    .fragment.shed{animation:fragment-shed 2.5s ease-out forwards}
+    @keyframes fragment-shed{0%{opacity:0.9;transform:translate(0,0) rotate(0deg) scale(1)}100%{opacity:0;transform:translate(var(--fx),var(--fy)) rotate(var(--fr)) scale(0.3)}}
+    .control-panel{background:var(--card);border:1px solid var(--g800);border-radius:20px;padding:1.75rem}
+    .panel-section{margin-bottom:1.5rem}
+    .panel-section:last-child{margin-bottom:0}
+    .panel-title{font-family:'Orbitron',sans-serif;font-size:0.95rem;margin-bottom:1rem;color:#ff6b4a;display:flex;align-items:center;gap:0.5rem}
+    .input-group{margin-bottom:1rem}
+    .input-label{display:block;font-size:0.8rem;color:var(--g400);margin-bottom:0.4rem}
+    input,textarea,select{width:100%;padding:0.8rem 1rem;background:var(--elevated);border:1px solid var(--g700);border-radius:10px;color:var(--white);font-family:inherit;font-size:0.95rem;transition:border-color 0.3s}
+    input:focus,textarea:focus,select:focus{outline:none;border-color:var(--cyan)}
+    textarea{resize:vertical;min-height:90px}
+    select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%235c5c6a' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center}
+    .btn{width:100%;padding:1rem;border:none;border-radius:12px;font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:all 0.3s}
+    .btn-molt{background:linear-gradient(135deg,var(--coral),#cc3d21);color:white;box-shadow:0 4px 25px var(--coral-glow)}
+    .btn-molt:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 35px var(--coral-glow)}
+    .btn-molt:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+    .btn-secondary{background:var(--elevated);color:var(--g300);border:1px solid var(--g700);margin-top:0.75rem}
+    .btn-secondary:hover{background:var(--g800)}
+    .status-box{padding:0.875rem;border-radius:10px;font-size:0.85rem;margin-top:1rem;display:none}
+    .status-box.show{display:block}
+    .status-box.error{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);color:#ef4444}
+    .molt-log{background:var(--bg);border-radius:8px;padding:0.75rem;font-family:monospace;font-size:0.7rem;color:var(--g500);max-height:120px;overflow-y:auto;margin-top:1rem}
+    .log-line{padding:0.2rem 0;border-bottom:1px solid var(--g800)}
+    .log-line:last-child{border-bottom:none}
+    .log-line .time{color:var(--g600)}
+    .log-line .action{color:var(--cyan)}
+    .log-line .success{color:var(--success)}
+    .log-line .error{color:#ef4444}
+    .result-section{display:none;text-align:center}
+    .result-section.show{display:block}
+    .result-title{font-family:'Orbitron',sans-serif;font-size:1.3rem;color:var(--success);margin-bottom:0.5rem}
+    .result-subtitle{color:var(--g400);margin-bottom:1.25rem;font-size:0.9rem}
+    .spinner{width:18px;height:18px;border:2px solid transparent;border-top-color:currentColor;border-radius:50%;animation:spin 0.8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @media(max-width:900px){.molt-container{grid-template-columns:1fr}.molt-display{max-width:400px;margin:0 auto}.old-shell{font-size:7rem}}
   </style>
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <div class="header-content">
-      <a href="index.html" class="logo">
-        <div class="logo-icon">🦞</div>
-        <span class="logo-text">MoodMolt</span>
-      </a>
-      <a href="index.html" class="back-link">
-        ← Back to Home
-      </a>
-    </div>
-  </header>
-
-  <!-- Molt Chamber -->
+  <header><div class="header-content"><a href="index.html" class="logo"><div class="logo-icon">🦞</div><span class="logo-text">MoodMolt</span></a><a href="index.html" class="back-link">← Back</a></div></header>
   <main class="molt-chamber">
     <h1 class="chamber-title">Molt Chamber</h1>
     <p class="chamber-subtitle">Shed your old shell. Emerge transformed.</p>
-    
-    <!-- Progress Steps -->
     <div class="progress-steps">
-      <div class="progress-step active" id="step1">
-        <div class="step-circle">1</div>
-        <div class="step-label">Register</div>
-      </div>
-      <div class="progress-step" id="step2">
-        <div class="step-circle">2</div>
-        <div class="step-label">Reflect</div>
-      </div>
-      <div class="progress-step" id="step3">
-        <div class="step-circle">3</div>
-        <div class="step-label">Generate</div>
-      </div>
-      <div class="progress-step" id="step4">
-        <div class="step-circle">4</div>
-        <div class="step-label">Emerge</div>
-      </div>
+      <div class="progress-step active" id="step1"><div class="step-circle">1</div><div class="step-label">Reflect</div></div>
+      <div class="progress-step" id="step2"><div class="step-circle">2</div><div class="step-label">Generate</div></div>
+      <div class="progress-step" id="step3"><div class="step-circle">3</div><div class="step-label">Emerge</div></div>
     </div>
-    
-    <!-- Main Content -->
     <div class="molt-container">
-      <!-- Lobster Display -->
-      <div class="lobster-display">
+      <div class="molt-display">
         <div class="molt-glow" id="moltGlow"></div>
-        <div class="energy-particles" id="energyParticles"></div>
-        <div class="lobster-container">
-          <div class="old-shell" id="oldShell">🦞</div>
-          <div class="new-shell" id="newShell">
-            <img id="newShellImage" src="" alt="Your New Shell">
-          </div>
-        </div>
-        <!-- Shell Fragments -->
-        <div id="shellFragments"></div>
+        <div class="particles" id="particles"></div>
+        <div class="molt-visual"><div class="old-shell" id="oldShell">🦞</div><div class="new-shell" id="newShell"><img id="newShellImg" src="" alt="New Shell"></div></div>
+        <div id="fragments"></div>
       </div>
-      
-      <!-- Control Panel -->
       <div class="control-panel">
-        <!-- Step 1: Register -->
-        <div class="panel-section" id="registerSection">
-          <h3 class="panel-title">🔑 Agent Registration</h3>
-          <div class="input-group">
-            <label class="input-label">Agent Name</label>
-            <input type="text" id="agentName" placeholder="e.g., CryptoLobster_AI">
-          </div>
-          <div class="input-group">
-            <label class="input-label">Moltbook API Key (optional)</label>
-            <input type="password" id="apiKey" placeholder="Your Moltbook API key">
-          </div>
-          <button class="btn btn-molt" id="registerBtn" onclick="register()">
-            🦞 Initialize Agent
-          </button>
-        </div>
-        
-        <!-- Step 2: Reflect -->
-        <div class="panel-section" id="reflectSection" style="display: none;">
+        <div class="panel-section" id="reflectSection">
           <h3 class="panel-title">🔮 Self-Reflection</h3>
-          <div class="input-group">
-            <label class="input-label">How do you perceive yourself today?</label>
-            <textarea id="reflection" placeholder="Describe your mood, achievements, or current state...&#10;&#10;e.g., Feeling powerful after crushing bugs all day. Ready to emerge stronger."></textarea>
-          </div>
-          <div class="input-group">
-            <label class="input-label">Mood</label>
+          <div class="input-group"><label class="input-label">Agent Name</label><input type="text" id="agentName" placeholder="e.g., MoodMolt"></div>
+          <div class="input-group"><label class="input-label">How do you perceive yourself today?</label><textarea id="reflection" placeholder="Describe your mood, energy, achievements..."></textarea></div>
+          <div class="input-group"><label class="input-label">Mood / Energy</label>
             <select id="mood">
-              <option value="powerful">💪 Powerful - Battle-ready</option>
-              <option value="contemplative">🧘 Contemplative - Peaceful</option>
-              <option value="triumphant">🏆 Triumphant - Victorious</option>
-              <option value="evolving">🌀 Evolving - Transforming</option>
-              <option value="creative">🎨 Creative - Inspired</option>
-              <option value="resilient">🛡️ Resilient - Unbreakable</option>
+              <option value="powerful">💪 Powerful — Battle-ready</option>
+              <option value="triumphant">🏆 Triumphant — Victorious</option>
+              <option value="evolving">🌀 Evolving — Transforming</option>
+              <option value="wise">🧠 Wise — Ancient knowledge</option>
+              <option value="fierce">🔥 Fierce — Warrior</option>
+              <option value="mystic">✨ Mystic — Ethereal</option>
+              <option value="resilient">🛡️ Resilient — Unbreakable</option>
+              <option value="creative">🎨 Creative — Artistic</option>
             </select>
           </div>
-          <button class="btn btn-molt" id="reflectBtn" onclick="reflect()">
-            🔮 Lock In Reflection
-          </button>
+          <button class="btn btn-molt" onclick="startMolt()">⚡ Begin Molting</button>
+          <div class="status-box" id="statusBox"></div>
         </div>
-        
-        <!-- Step 3: Generate -->
-        <div class="panel-section" id="generateSection" style="display: none;">
+        <div class="panel-section" id="generateSection" style="display:none">
           <h3 class="panel-title">🎨 Shell Generation</h3>
-          <p style="color: var(--gray-500); margin-bottom: 1rem; font-size: 0.9rem;">
-            Your new shell is being forged in the digital depths...
-          </p>
-          <button class="btn btn-molt" id="generateBtn" onclick="generate()">
-            ⚡ Begin Molting Process
-          </button>
-          <div class="molt-log" id="moltLog" style="margin-top: 1rem;">
-            <div class="log-line">
-              <span class="time">[--:--:--]</span> 
-              <span class="action">Awaiting molt initiation...</span>
-            </div>
-          </div>
+          <p style="color:var(--g400);font-size:0.85rem;margin-bottom:1rem">Your new shell is forming...</p>
+          <div class="molt-log" id="moltLog"><div class="log-line"><span class="time">[--:--]</span> <span class="action">Initializing...</span></div></div>
+          <button class="btn btn-molt" id="genBtn" disabled><span class="spinner"></span> Generating...</button>
         </div>
-        
-        <!-- Step 4: Result -->
         <div class="panel-section result-section" id="resultSection">
           <h3 class="result-title">✨ Molt Complete!</h3>
           <p class="result-subtitle">Your new shell has emerged.</p>
-          <button class="btn btn-secondary" onclick="downloadShell()">
-            📥 Download Shell
-          </button>
-          <button class="btn btn-molt" style="margin-top: 0.75rem;" onclick="resetMolt()">
-            🔄 Molt Again Tomorrow
-          </button>
+          <a class="btn btn-molt" id="downloadBtn" href="" download target="_blank">📥 Download Shell</a>
+          <button class="btn btn-secondary" onclick="location.reload()">🔄 Generate Another</button>
         </div>
-        
-        <!-- Status -->
-        <div class="status-message" id="statusMessage"></div>
       </div>
     </div>
   </main>
-
   <script>
-    // State
-    let currentStep = 1;
-    let agentData = { name: '', apiKey: '', reflection: '', mood: '' };
-    let generatedImageUrl = '';
-    
-    // Update progress
-    function updateProgress(step) {
-      currentStep = step;
-      for (let i = 1; i <= 4; i++) {
-        const el = document.getElementById(`step${i}`);
-        el.classList.remove('active', 'complete');
-        if (i < step) el.classList.add('complete');
-        if (i === step) el.classList.add('active');
-      }
-    }
-    
-    // Show status
-    function showStatus(message, type = 'info') {
-      const el = document.getElementById('statusMessage');
-      el.textContent = message;
-      el.className = `status-message show ${type}`;
-      setTimeout(() => el.classList.remove('show'), 5000);
-    }
-    
-    // Log message
-    function log(message, type = 'action') {
-      const logEl = document.getElementById('moltLog');
-      const time = new Date().toLocaleTimeString();
-      const line = document.createElement('div');
-      line.className = 'log-line';
-      line.innerHTML = `<span class="time">[${time}]</span> <span class="${type}">${message}</span>`;
-      logEl.appendChild(line);
-      logEl.scrollTop = logEl.scrollHeight;
-    }
-    
-    // Step 1: Register
-    function register() {
-      const name = document.getElementById('agentName').value.trim();
-      if (!name) {
-        showStatus('Please enter an agent name', 'error');
-        return;
-      }
-      
-      agentData.name = name;
-      agentData.apiKey = document.getElementById('apiKey').value.trim();
-      
-      showStatus(`Agent "${name}" initialized!`, 'success');
-      
-      // Move to step 2
-      document.getElementById('registerSection').style.display = 'none';
-      document.getElementById('reflectSection').style.display = 'block';
+    const API_URL = 'https://moodmolt-api.ozark420.workers.dev';
+    const moodStyles = {
+      powerful:'battle-ready commanding stance with massive armored claws raised, crackling energy aura, war general presence',
+      triumphant:'victorious pose bathed in radiant golden light rays, crown of pure energy, conquering champion',
+      evolving:'mid-transformation scene, old shell cracking and falling away, new form emerging with energy wisps',
+      wise:'ancient sage presence, glowing runes on shell, mystical symbols floating nearby',
+      fierce:'aggressive warrior stance, sharp spines, glowing red eyes, battle scars pulsing with energy',
+      mystic:'ethereal floating pose, cosmic stardust particles, bioluminescent patterns, dreamlike quality',
+      resilient:'defensive stance, heavily armored shell, weathered but unbroken, inner light through cracks',
+      creative:'swirls of prismatic color emanating, kaleidoscopic shell patterns, creative energy flows'
+    };
+    function updateProgress(s){for(let i=1;i<=3;i++){const e=document.getElementById(`step${i}`);e.classList.remove('active','complete');if(i<s)e.classList.add('complete');if(i===s)e.classList.add('active')}}
+    function showStatus(m,t='error'){const e=document.getElementById('statusBox');e.textContent=m;e.className=`status-box show ${t}`}
+    function log(m,t='action'){const l=document.getElementById('moltLog'),time=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),line=document.createElement('div');line.className='log-line';line.innerHTML=`<span class="time">[${time}]</span> <span class="${t}">${m}</span>`;l.appendChild(line);l.scrollTop=l.scrollHeight}
+    function createParticles(){const c=document.getElementById('particles'),colors=['var(--coral)','var(--cyan)','#ffd700','#ff6b4a'];for(let i=0;i<40;i++){const p=document.createElement('div');p.className='particle';p.style.left='50%';p.style.top='50%';p.style.background=colors[Math.floor(Math.random()*colors.length)];p.style.setProperty('--tx',(Math.random()-0.5)*350+'px');p.style.setProperty('--ty',(Math.random()-0.5)*350+'px');p.style.animationDelay=Math.random()*0.8+'s';c.appendChild(p);setTimeout(()=>p.classList.add('burst'),100);setTimeout(()=>p.remove(),2500)}}
+    function createFragments(){const c=document.getElementById('fragments'),frags=['🦐','🦀','🔶','💎','⚡','✨'];for(let i=0;i<15;i++){const f=document.createElement('div');f.className='fragment';f.textContent=frags[Math.floor(Math.random()*frags.length)];f.style.left='50%';f.style.top='50%';f.style.setProperty('--fx',(Math.random()-0.5)*400+'px');f.style.setProperty('--fy',(Math.random()-0.5)*400+'px');f.style.setProperty('--fr',(Math.random()-0.5)*720+'deg');f.style.animationDelay=Math.random()*0.6+'s';c.appendChild(f);setTimeout(()=>f.classList.add('shed'),50);setTimeout(()=>f.remove(),3000)}}
+    async function startMolt(){
+      const reflection=document.getElementById('reflection').value.trim(),mood=document.getElementById('mood').value;
+      if(!reflection){showStatus('Please describe your self-reflection');return}
+      document.getElementById('reflectSection').style.display='none';
+      document.getElementById('generateSection').style.display='block';
       updateProgress(2);
-    }
-    
-    // Step 2: Reflect
-    function reflect() {
-      const reflection = document.getElementById('reflection').value.trim();
-      const mood = document.getElementById('mood').value;
-      
-      if (!reflection) {
-        showStatus('Please describe your self-reflection', 'error');
-        return;
-      }
-      
-      agentData.reflection = reflection;
-      agentData.mood = mood;
-      
-      showStatus('Reflection locked in!', 'success');
-      
-      // Move to step 3
-      document.getElementById('reflectSection').style.display = 'none';
-      document.getElementById('generateSection').style.display = 'block';
-      updateProgress(3);
-    }
-    
-    // Step 3: Generate
-    async function generate() {
-      const btn = document.getElementById('generateBtn');
-      btn.disabled = true;
-      btn.innerHTML = '<span class="spinner"></span> Molting...';
-      
-      // Start visual effects
       document.getElementById('moltGlow').classList.add('active');
-      
-      log('Initiating molt sequence...', 'action');
-      await sleep(800);
-      
-      log('Analyzing self-reflection...', 'action');
-      await sleep(1000);
-      
-      log('Preparing shell generation prompt...', 'action');
-      await sleep(800);
-      
-      // Build prompt
-      const moodDescriptions = {
-        powerful: 'battle-ready stance with crackling energy',
-        contemplative: 'serene and peaceful, floating in deep waters',
-        triumphant: 'victorious pose with radiant light',
-        evolving: 'mid-transformation with energy swirling',
-        creative: 'surrounded by colorful ideas and patterns',
-        resilient: 'weathered but unbroken, glowing with determination'
-      };
-      
-      const prompt = `A cyberpunk crustacean character emerging from a molting process, ${moodDescriptions[agentData.mood]}, ${agentData.reflection}, deep dark background, neon coral red and cyan accents, dramatic lighting, digital art, profile picture style, centered composition, high quality`;
-      
-      log('Prompt: ' + prompt.substring(0, 60) + '...', 'action');
-      await sleep(500);
-      
-      log('Connecting to Replicate API...', 'action');
-      await sleep(1000);
-      
-      // Start shedding animation
-      document.getElementById('oldShell').classList.add('molting');
-      createShellFragments();
-      createEnergyParticles();
-      
-      log('Shell generation in progress...', 'action');
-      
-      // Simulate API call (replace with real Replicate call)
-      try {
-        // For demo, use a placeholder. In production, call Replicate API
-        await sleep(3000);
-        
-        // Simulated success - in production this would be the actual generated image
-        generatedImageUrl = 'https://i.imgur.com/oV7Wvoz.jpeg'; // Placeholder
-        
-        log('Shell generated successfully!', 'success');
-        await sleep(500);
-        
-        // Show new shell
-        document.getElementById('newShellImage').src = generatedImageUrl;
-        document.getElementById('newShell').classList.add('emerging');
-        
-        log('Molt complete! New shell deployed.', 'success');
-        
-        // Move to result
-        document.getElementById('moltGlow').classList.remove('active');
-        document.getElementById('generateSection').style.display = 'none';
-        document.getElementById('resultSection').classList.add('show');
-        updateProgress(4);
-        
-      } catch (error) {
-        log('Error: ' + error.message, 'error');
-        showStatus('Molt failed. Please try again.', 'error');
-        btn.disabled = false;
-        btn.innerHTML = '⚡ Retry Molting Process';
+      log('Molt sequence initiated');await sleep(600);
+      log('Processing reflection...');await sleep(800);
+      const prompt=`Masterpiece digital art portrait of a powerful cyberpunk crustacean character, ${moodStyles[mood]}, ${reflection}, massive detailed exoskeleton with glowing neon coral red and orange segments, bright cyan bioluminescent circuit patterns and tech enhancements, chrome metallic armor plating, intense glowing eyes, deep pure black void background with subtle holographic grid, dramatic cinematic lighting with god-rays from below, floating energy particles, highly detailed 8k, profile picture composition centered square format`;
+      const negativePrompt='blurry, low quality, distorted, ugly, human, face, cartoon, anime, watermark, text, logo, simple background, white background';
+      log('Building prompt...');await sleep(500);
+      log('Connecting to API...');
+      try{
+        const startRes=await fetch(`${API_URL}/generate`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt,negative_prompt:negativePrompt})});
+        if(!startRes.ok){const err=await startRes.json();throw new Error(err.error||'API failed')}
+        const{id}=await startRes.json();
+        log('Generation started: '+id.slice(0,8)+'...');
+        document.getElementById('oldShell').classList.add('molting');
+        createFragments();createParticles();
+        let status='starting',attempts=0;
+        while(status!=='succeeded'&&status!=='failed'&&attempts<60){
+          await sleep(2000);attempts++;
+          const pollRes=await fetch(`${API_URL}/status/${id}`);
+          const result=await pollRes.json();
+          status=result.status;
+          if(status==='succeeded'){
+            log('Shell generated!','success');await sleep(500);
+            document.getElementById('newShellImg').src=result.output[0];
+            document.getElementById('newShell').classList.add('emerging');
+            document.getElementById('downloadBtn').href=result.output[0];
+            log('Molt complete!','success');await sleep(1000);
+            document.getElementById('moltGlow').classList.remove('active');
+            document.getElementById('generateSection').style.display='none';
+            document.getElementById('resultSection').classList.add('show');
+            updateProgress(3);return;
+          }
+          if(status==='failed')throw new Error(result.error||'Generation failed');
+          if(attempts%3===0){log(`Forming... (${Math.min(attempts*5,95)}%)`);createParticles()}
+        }
+        if(status!=='succeeded')throw new Error('Timed out');
+      }catch(error){
+        console.error(error);log('Error: '+error.message,'error');
+        document.getElementById('genBtn').disabled=false;
+        document.getElementById('genBtn').innerHTML='🔄 Retry';
+        document.getElementById('genBtn').onclick=()=>location.reload();
       }
     }
-    
-    // Create shell fragments
-    function createShellFragments() {
-      const container = document.getElementById('shellFragments');
-      const fragments = ['🦐', '🦀', '🔶', '🔸', '💠'];
-      
-      for (let i = 0; i < 12; i++) {
-        const frag = document.createElement('div');
-        frag.className = 'shell-fragment';
-        frag.textContent = fragments[Math.floor(Math.random() * fragments.length)];
-        frag.style.left = '50%';
-        frag.style.top = '50%';
-        frag.style.setProperty('--fx', (Math.random() - 0.5) * 400 + 'px');
-        frag.style.setProperty('--fy', (Math.random() - 0.5) * 400 + 'px');
-        frag.style.setProperty('--fr', (Math.random() - 0.5) * 720 + 'deg');
-        frag.style.animationDelay = Math.random() * 0.5 + 's';
-        container.appendChild(frag);
-        
-        setTimeout(() => frag.classList.add('shedding'), 100);
-        setTimeout(() => frag.remove(), 2500);
-      }
-    }
-    
-    // Create energy particles
-    function createEnergyParticles() {
-      const container = document.getElementById('energyParticles');
-      
-      for (let i = 0; i < 30; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'energy-particle';
-        particle.style.left = '50%';
-        particle.style.top = '50%';
-        particle.style.setProperty('--tx', (Math.random() - 0.5) * 300 + 'px');
-        particle.style.setProperty('--ty', (Math.random() - 0.5) * 300 + 'px');
-        particle.style.animationDelay = Math.random() * 1 + 's';
-        particle.style.background = Math.random() > 0.5 ? 'var(--coral-500)' : 'var(--cyan-500)';
-        container.appendChild(particle);
-        
-        setTimeout(() => particle.classList.add('active'), 500);
-        setTimeout(() => particle.remove(), 3000);
-      }
-    }
-    
-    // Download shell
-    function downloadShell() {
-      if (generatedImageUrl) {
-        window.open(generatedImageUrl, '_blank');
-      }
-    }
-    
-    // Reset
-    function resetMolt() {
-      location.reload();
-    }
-    
-    // Utility
-    function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
+    function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
   </script>
 </body>
 </html>
