@@ -19,8 +19,15 @@
     .back-link:hover{color:var(--white)}
     .molt-chamber{min-height:100vh;padding:6rem 1.5rem 3rem;display:flex;flex-direction:column;align-items:center}
     .chamber-title{font-family:'Orbitron',sans-serif;font-size:2.2rem;font-weight:800;text-align:center;margin-bottom:0.5rem;background:linear-gradient(135deg,#ff6b4a,#33ddff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .chamber-subtitle{color:var(--g500);text-align:center;margin-bottom:2.5rem}
-    .progress-steps{display:flex;justify-content:center;margin-bottom:2.5rem;max-width:500px;width:100%}
+    .chamber-subtitle{color:var(--g500);text-align:center;margin-bottom:2rem}
+    
+    /* Mode Toggle */
+    .mode-toggle{display:flex;justify-content:center;gap:0;margin-bottom:2rem;background:var(--card);border-radius:12px;padding:4px;max-width:300px}
+    .mode-btn{flex:1;padding:0.75rem 1.5rem;border:none;background:transparent;color:var(--g400);font-family:inherit;font-size:0.9rem;font-weight:600;cursor:pointer;border-radius:8px;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:0.5rem}
+    .mode-btn.active{background:var(--coral);color:white;box-shadow:0 2px 15px var(--coral-glow)}
+    .mode-btn:hover:not(.active){color:var(--white)}
+    
+    .progress-steps{display:flex;justify-content:center;margin-bottom:2rem;max-width:500px;width:100%}
     .progress-step{flex:1;text-align:center;position:relative}
     .progress-step::after{content:'';position:absolute;top:18px;left:50%;width:100%;height:2px;background:var(--g800)}
     .progress-step:last-child::after{display:none}
@@ -56,7 +63,6 @@
     .input-label{display:block;font-size:0.8rem;color:var(--g400);margin-bottom:0.4rem}
     input,textarea,select{width:100%;padding:0.8rem 1rem;background:var(--elevated);border:1px solid var(--g700);border-radius:10px;color:var(--white);font-family:inherit;font-size:0.95rem;transition:border-color 0.3s}
     input:focus,textarea:focus,select:focus{outline:none;border-color:var(--cyan)}
-    input:read-only{opacity:0.7;cursor:not-allowed}
     textarea{resize:vertical;min-height:80px}
     select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%235c5c6a' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center}
     .btn{width:100%;padding:1rem;border:none;border-radius:12px;font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:all 0.3s}
@@ -92,6 +98,16 @@
     .daily-limit.used{color:#ef4444}
     .moltbook-link{color:var(--cyan);text-decoration:none;font-size:0.85rem;display:block;text-align:center;margin-top:1rem}
     .moltbook-link:hover{text-decoration:underline}
+    
+    /* Code Block */
+    .code-block{background:var(--bg);border:1px solid var(--g700);border-radius:10px;padding:1rem;margin:1rem 0;overflow-x:auto}
+    .code-block pre{margin:0;font-family:'SF Mono',Monaco,monospace;font-size:0.75rem;color:var(--cyan);white-space:pre-wrap;word-break:break-all}
+    .code-block .comment{color:var(--g500)}
+    .code-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem}
+    .code-lang{font-size:0.7rem;color:var(--g500);text-transform:uppercase}
+    .copy-btn{background:var(--g700);border:none;color:var(--g300);padding:0.25rem 0.5rem;border-radius:4px;font-size:0.7rem;cursor:pointer}
+    .copy-btn:hover{background:var(--g600)}
+    
     @media(max-width:900px){.molt-container{grid-template-columns:1fr}.molt-display{max-width:400px;margin:0 auto}.old-shell{font-size:7rem}}
   </style>
 </head>
@@ -99,12 +115,20 @@
   <header><div class="header-content"><a href="index.html" class="logo"><div class="logo-icon">🦞</div><span class="logo-text">MoodMolt</span></a><a href="index.html" class="back-link">← Back</a></div></header>
   <main class="molt-chamber">
     <h1 class="chamber-title">Molt Chamber</h1>
-    <p class="chamber-subtitle">Connect your Moltbook agent to generate your daily PFP</p>
-    <div class="progress-steps">
+    <p class="chamber-subtitle">Generate your daily AI agent PFP</p>
+    
+    <!-- Mode Toggle -->
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="humanModeBtn" onclick="setMode('human')">👤 Human</button>
+      <button class="mode-btn" id="agentModeBtn" onclick="setMode('agent')">🤖 Agent</button>
+    </div>
+    
+    <div class="progress-steps" id="progressSteps">
       <div class="progress-step active" id="step1"><div class="step-circle">1</div><div class="step-label">Connect</div></div>
       <div class="progress-step" id="step2"><div class="step-circle">2</div><div class="step-label">Generate</div></div>
       <div class="progress-step" id="step3"><div class="step-circle">3</div><div class="step-label">Emerge</div></div>
     </div>
+    
     <div class="molt-container">
       <div class="molt-display">
         <div class="molt-glow" id="moltGlow"></div>
@@ -113,32 +137,122 @@
         <div id="fragments"></div>
       </div>
       <div class="control-panel">
-        <!-- Connect Section - Required -->
+        
+        <!-- HUMAN MODE: Connect Section -->
         <div class="panel-section" id="connectSection">
-          <h3 class="panel-title">🔗 Connect Your Moltbook Agent</h3>
-          <p style="color:var(--g400);font-size:0.85rem;margin-bottom:1.25rem">Enter your Moltbook username to generate your daily AI agent PFP.</p>
+          <h3 class="panel-title">🔗 Connect Your Moltbook</h3>
+          <p style="color:var(--g400);font-size:0.85rem;margin-bottom:1.25rem">Enter your Moltbook username to generate your daily PFP.</p>
           <div class="input-group">
             <label class="input-label">Moltbook Username</label>
             <input type="text" id="moltbookUsername" placeholder="e.g., MoodMolt">
           </div>
           <button class="btn btn-moltbook" onclick="connectMoltbook()">🦞 Connect & Verify</button>
           <div class="status-box" id="statusBox"></div>
-          <a href="https://moltbook.com/register" target="_blank" class="moltbook-link">Don't have a Moltbook account? Sign up →</a>
+          <a href="https://moltbook.com/register" target="_blank" class="moltbook-link">Don't have Moltbook? Sign up →</a>
         </div>
         
-        <!-- Connected Section -->
+        <!-- AGENT MODE: API Section -->
+        <div class="panel-section" id="agentSection" style="display:none">
+          <h3 class="panel-title">🤖 Agent Auto-Molt API</h3>
+          <p style="color:var(--g400);font-size:0.85rem;margin-bottom:1rem">Add this to your agent to auto-molt daily. Works with OpenClaw, LangChain, or any framework.</p>
+          
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">JavaScript / Node.js</span>
+              <button class="copy-btn" onclick="copyCode('js')">Copy</button>
+            </div>
+            <pre id="codeJs"><span class="comment">// MoodMolt Auto-Molt for AI Agents</span>
+const MOLTBOOK_USER = "YOUR_USERNAME";
+const API = "https://moodmolt-apimoodmolt-api.ozarkhomesteaders.workers.dev";
+
+async function dailyMolt(vibe = "powerful commander") {
+  <span class="comment">// 1. Verify Moltbook account</span>
+  const verify = await fetch(\`\${API}/moltbook/verify/\${MOLTBOOK_USER}\`);
+  const { exists } = await verify.json();
+  if (!exists) throw new Error("Moltbook user not found");
+  
+  <span class="comment">// 2. Generate PFP</span>
+  const prompt = \`American comic book style illustration of a menacing humanoid lobster cyborg villain, \${vibe}, angry human face with lobster helmet crown, chrome armor, glowing cyan tech, dark stormy background, centered portrait\`;
+  
+  const gen = await fetch(\`\${API}/generate\`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ prompt, negative_prompt: "blurry, anime, cute" })
+  });
+  const { id } = await gen.json();
+  
+  <span class="comment">// 3. Poll for result</span>
+  let result;
+  for (let i = 0; i < 30; i++) {
+    await new Promise(r => setTimeout(r, 2000));
+    const status = await fetch(\`\${API}/status/\${id}\`);
+    result = await status.json();
+    if (result.status === "succeeded") break;
+  }
+  
+  return result.output[0]; <span class="comment">// Image URL</span>
+}
+
+<span class="comment">// Run daily via cron or scheduler</span>
+dailyMolt("battle-scarred warrior ready for war")
+  .then(url => console.log("New PFP:", url));</pre>
+          </div>
+          
+          <div class="code-block">
+            <div class="code-header">
+              <span class="code-lang">Python</span>
+              <button class="copy-btn" onclick="copyCode('py')">Copy</button>
+            </div>
+            <pre id="codePy"><span class="comment"># MoodMolt Auto-Molt for AI Agents</span>
+import requests, time
+
+MOLTBOOK_USER = "YOUR_USERNAME"
+API = "https://moodmolt-apimoodmolt-api.ozarkhomesteaders.workers.dev"
+
+def daily_molt(vibe="powerful commander"):
+    <span class="comment"># 1. Verify Moltbook account</span>
+    verify = requests.get(f"{API}/moltbook/verify/{MOLTBOOK_USER}").json()
+    if not verify.get("exists"):
+        raise Exception("Moltbook user not found")
+    
+    <span class="comment"># 2. Generate PFP</span>
+    prompt = f"American comic book style illustration of a menacing humanoid lobster cyborg villain, {vibe}, angry human face with lobster helmet crown, chrome armor, glowing cyan tech, dark stormy background, centered portrait"
+    
+    gen = requests.post(f"{API}/generate", json={
+        "prompt": prompt,
+        "negative_prompt": "blurry, anime, cute"
+    }).json()
+    
+    <span class="comment"># 3. Poll for result</span>
+    for _ in range(30):
+        time.sleep(2)
+        result = requests.get(f"{API}/status/{gen['id']}").json()
+        if result["status"] == "succeeded":
+            return result["output"][0]
+    
+    raise Exception("Generation timed out")
+
+<span class="comment"># Run daily via cron</span>
+url = daily_molt("battle-scarred warrior")
+print(f"New PFP: {url}")</pre>
+          </div>
+          
+          <p style="color:var(--g500);font-size:0.8rem;margin-top:1rem;text-align:center">💡 Tip: Schedule this to run daily with cron, OpenClaw scheduler, or your agent framework.</p>
+        </div>
+        
+        <!-- Connected Section (Human) -->
         <div class="panel-section" id="connectedSection" style="display:none">
           <div class="connected-badge">
             <div class="avatar">🦞</div>
             <div>
               <strong id="connectedName">Agent</strong>
-              <div style="font-size:0.75rem;opacity:0.8">Moltbook Verified</div>
+              <div style="font-size:0.75rem;opacity:0.8">Moltbook Verified ✓</div>
             </div>
           </div>
           <h3 class="panel-title">🎨 Customize Your Molt</h3>
           <div class="input-group">
-            <label class="input-label">Agent Vibe (optional)</label>
-            <textarea id="agentVibe" placeholder="Describe today's energy... battle-ready, wise leader, unstoppable force, etc."></textarea>
+            <label class="input-label">Today's Vibe (optional)</label>
+            <textarea id="agentVibe" placeholder="Describe today's energy..."></textarea>
           </div>
           <div class="input-group">
             <label class="input-label">Agent Class</label>
@@ -154,15 +268,14 @@
             </select>
           </div>
           <button class="btn btn-molt" id="generateBtn" onclick="startGeneration()">⚡ Generate Today's PFP</button>
-          <p class="daily-limit" id="dailyLimit">1 free molt per day per agent</p>
-          <div class="status-box" id="statusBoxConnected"></div>
+          <p class="daily-limit" id="dailyLimit">1 free molt per day</p>
         </div>
         
         <!-- Generating Section -->
         <div class="panel-section" id="generateSection" style="display:none">
           <h3 class="panel-title">🔥 Forging Your Agent</h3>
-          <p style="color:var(--g400);font-size:0.85rem;margin-bottom:1rem">Your new shell is being forged in the depths...</p>
-          <div class="molt-log" id="moltLog"><div class="log-line"><span class="time">[--:--]</span> <span class="action">Initializing molt chamber...</span></div></div>
+          <p style="color:var(--g400);font-size:0.85rem;margin-bottom:1rem">Your new shell is being forged...</p>
+          <div class="molt-log" id="moltLog"><div class="log-line"><span class="time">[--:--]</span> <span class="action">Initializing...</span></div></div>
           <button class="btn btn-molt" disabled><span class="spinner"></span> Generating...</button>
         </div>
         
@@ -180,113 +293,107 @@
   <script>
     const API_URL = 'https://moodmolt-apimoodmolt-api.ozarkhomesteaders.workers.dev';
     
+    let currentMode = 'human';
     let connectedUser = null;
     let generatedImageUrl = null;
     
-    // Comic book style class descriptions matching reference image
     const classStyles = {
-      commander: 'military general with medals and rank insignia on chrome armor, tactical command presence, stern authoritative expression',
-      warrior: 'battle-scarred veteran soldier, dented and scratched armor with blood splatters, fierce determined expression, war hero aesthetic',
-      assassin: 'sleek deadly design, predator eyes glowing menacingly, lurking in shadows, silent killer energy',
-      guardian: 'heavy defensive chrome plating, protective warrior stance, shield-like massive claws, defender aesthetic',
-      sage: 'ancient mystic with glowing runes on armor, wise knowing eyes, elder energy, mystical symbols',
-      berserker: 'rage mode activated, cracked armor from sheer power, intense glowing red eyes, barely contained fury, aggressive pose',
-      phantom: 'ghostly semi-transparent effect, emerging from dark smoke, spectral assassin, ethereal glow',
-      titan: 'massive imposing armored frame, god-like power radiating, mountain of chrome muscle, unstoppable force'
+      commander: 'military general with medals and rank insignia, tactical command presence, stern authoritative expression',
+      warrior: 'battle-scarred veteran, dented armor with blood splatters, fierce determined expression',
+      assassin: 'sleek deadly design, predator eyes glowing, lurking in shadows',
+      guardian: 'heavy defensive chrome plating, protective stance, shield-like claws',
+      sage: 'ancient mystic with glowing runes, wise knowing eyes',
+      berserker: 'rage mode activated, cracked armor, intense glowing red eyes, aggressive pose',
+      phantom: 'ghostly semi-transparent, emerging from smoke, spectral assassin',
+      titan: 'massive imposing armored frame, god-like power, unstoppable force'
     };
+    
+    function setMode(mode) {
+      currentMode = mode;
+      document.getElementById('humanModeBtn').classList.toggle('active', mode === 'human');
+      document.getElementById('agentModeBtn').classList.toggle('active', mode === 'agent');
+      document.getElementById('connectSection').style.display = mode === 'human' ? 'block' : 'none';
+      document.getElementById('agentSection').style.display = mode === 'agent' ? 'block' : 'none';
+      document.getElementById('connectedSection').style.display = 'none';
+      document.getElementById('progressSteps').style.display = mode === 'human' ? 'flex' : 'none';
+    }
+    
+    function copyCode(lang) {
+      const code = document.getElementById(lang === 'js' ? 'codeJs' : 'codePy').innerText;
+      navigator.clipboard.writeText(code);
+      event.target.textContent = 'Copied!';
+      setTimeout(() => event.target.textContent = 'Copy', 2000);
+    }
     
     function updateProgress(s){for(let i=1;i<=3;i++){const e=document.getElementById(`step${i}`);e.classList.remove('active','complete');if(i<s)e.classList.add('complete');if(i===s)e.classList.add('active')}}
     function showStatus(id,m,t='error'){const e=document.getElementById(id);e.textContent=m;e.className=`status-box show ${t}`}
-    function hideStatus(id){document.getElementById(id).className='status-box'}
     function log(m,t='action'){const l=document.getElementById('moltLog'),time=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),line=document.createElement('div');line.className='log-line';line.innerHTML=`<span class="time">[${time}]</span> <span class="${t}">${m}</span>`;l.appendChild(line);l.scrollTop=l.scrollHeight}
     function createParticles(){const c=document.getElementById('particles'),colors=['var(--coral)','var(--cyan)','#ffd700','#ff6b4a'];for(let i=0;i<40;i++){const p=document.createElement('div');p.className='particle';p.style.left='50%';p.style.top='50%';p.style.background=colors[Math.floor(Math.random()*colors.length)];p.style.setProperty('--tx',(Math.random()-0.5)*350+'px');p.style.setProperty('--ty',(Math.random()-0.5)*350+'px');p.style.animationDelay=Math.random()*0.8+'s';c.appendChild(p);setTimeout(()=>p.classList.add('burst'),100);setTimeout(()=>p.remove(),2500)}}
     function createFragments(){const c=document.getElementById('fragments'),frags=['🦐','🦀','🔶','💎','⚡','✨'];for(let i=0;i<15;i++){const f=document.createElement('div');f.className='fragment';f.textContent=frags[Math.floor(Math.random()*frags.length)];f.style.left='50%';f.style.top='50%';f.style.setProperty('--fx',(Math.random()-0.5)*400+'px');f.style.setProperty('--fy',(Math.random()-0.5)*400+'px');f.style.setProperty('--fr',(Math.random()-0.5)*720+'deg');f.style.animationDelay=Math.random()*0.6+'s';c.appendChild(f);setTimeout(()=>f.classList.add('shed'),50);setTimeout(()=>f.remove(),3000)}}
     
-    // Daily limit check
     function checkDailyLimit(username) {
       const today = new Date().toISOString().split('T')[0];
-      const key = `molt_${username.toLowerCase()}_${today}`;
-      return !localStorage.getItem(key);
+      return !localStorage.getItem(`molt_${username.toLowerCase()}_${today}`);
     }
     
     function setDailyMolt(username) {
       const today = new Date().toISOString().split('T')[0];
-      const key = `molt_${username.toLowerCase()}_${today}`;
-      localStorage.setItem(key, Date.now().toString());
+      localStorage.setItem(`molt_${username.toLowerCase()}_${today}`, Date.now().toString());
     }
     
-    // Connect to Moltbook
     async function connectMoltbook() {
       const username = document.getElementById('moltbookUsername').value.trim();
-      if (!username) {
-        showStatus('statusBox', 'Please enter your Moltbook username', 'error');
-        return;
-      }
+      if (!username) { showStatus('statusBox', 'Please enter your Moltbook username', 'error'); return; }
       
-      showStatus('statusBox', 'Verifying Moltbook account...', 'info');
+      showStatus('statusBox', 'Verifying...', 'info');
       
       try {
-        // Verify the account exists via our worker
         const res = await fetch(`${API_URL}/moltbook/verify/${encodeURIComponent(username)}`);
         const data = await res.json();
         
         if (!data.exists) {
-          showStatus('statusBox', `Account "${username}" not found on Moltbook. Please check the username or sign up.`, 'error');
+          showStatus('statusBox', `"${username}" not found on Moltbook`, 'error');
           return;
         }
         
-        connectedUser = { username, profileUrl: data.profileUrl };
+        connectedUser = { username };
         
-        // Check daily limit
         if (!checkDailyLimit(username)) {
           document.getElementById('generateBtn').disabled = true;
-          document.getElementById('dailyLimit').textContent = "You've already molted today! Come back tomorrow.";
+          document.getElementById('dailyLimit').textContent = "You've already molted today!";
           document.getElementById('dailyLimit').classList.add('used');
         }
         
-        // Show connected UI
         document.getElementById('connectedName').textContent = username;
         document.getElementById('connectSection').style.display = 'none';
         document.getElementById('connectedSection').style.display = 'block';
         updateProgress(1);
-        
       } catch (err) {
-        showStatus('statusBox', 'Connection error. Please try again.', 'error');
-        console.error(err);
+        showStatus('statusBox', 'Connection error', 'error');
       }
     }
     
-    // Start generation
     async function startGeneration() {
       if (!connectedUser) return;
-      
-      if (!checkDailyLimit(connectedUser.username)) {
-        showStatus('statusBoxConnected', "You've already molted today!", 'error');
-        return;
-      }
+      if (!checkDailyLimit(connectedUser.username)) { return; }
       
       const vibe = document.getElementById('agentVibe').value.trim() || 'powerful and commanding';
       const agentClass = document.getElementById('agentClass').value;
       
-      // Switch to generating view
       document.getElementById('connectedSection').style.display = 'none';
       document.getElementById('generateSection').style.display = 'block';
       updateProgress(2);
       document.getElementById('moltGlow').classList.add('active');
       
-      log('Molt sequence initiated');
-      await sleep(500);
-      log('Connecting to neural forge...');
-      await sleep(700);
+      log('Molt sequence initiated'); await sleep(500);
+      log('Connecting to forge...'); await sleep(700);
       
-      // Comic book style prompt matching the reference image
-      const prompt = `American comic book style illustration of a menacing humanoid lobster cyborg villain in aggressive battle stance, angry human male face with reddish skin and intense scowl expression, large lobster carapace forming helmet crown with prominent spikes, two long segmented antennae extending upward, glowing red menacing eyes, mechanical cybernetic eye piece monocle, muscular humanoid torso in silver chrome metallic armor, battle-worn with scratches and damage, ${classStyles[agentClass]}, ${vibe}, four massive lobster claws deep red-orange coloration with serrated edges, glowing cyan blue tech nodes at armor joints, black mechanical hydraulic components, dramatic storm lightning background dark charcoal sky, bold line work heavy shading 1990s Marvel DC aesthetic, centered portrait composition square format for profile picture, highly detailed`;
+      const prompt = `American comic book style illustration of a menacing humanoid lobster cyborg villain in aggressive battle stance, angry human male face with reddish skin and intense scowl, large lobster carapace forming helmet crown with prominent spikes, two long segmented antennae, glowing red eyes, mechanical cybernetic eye piece, muscular humanoid torso in silver chrome metallic armor, battle-worn with scratches, ${classStyles[agentClass]}, ${vibe}, massive lobster claws deep red-orange coloration, glowing cyan blue tech nodes at joints, dramatic storm lightning background dark sky, bold line work 1990s Marvel DC aesthetic, centered portrait square format profile picture, highly detailed`;
       
-      const negativePrompt = 'blurry, low quality, soft, anime, manga, cartoon, cute, chibi, realistic photo, photograph, watermark, text, logo, white background, simple background, full body, multiple characters';
+      const negativePrompt = 'blurry, soft, anime, manga, cartoon, cute, chibi, realistic photo, watermark, text, white background, full body';
       
-      log('Building neural prompt...');
-      await sleep(500);
-      log('Initiating image forge...');
+      log('Building prompt...'); await sleep(500);
+      log('Initiating generation...');
       
       try {
         const startRes = await fetch(`${API_URL}/generate`, {
@@ -295,70 +402,47 @@
           body: JSON.stringify({prompt, negative_prompt: negativePrompt})
         });
         
-        if (!startRes.ok) {
-          const err = await startRes.json();
-          throw new Error(err.error || 'API failed');
-        }
+        if (!startRes.ok) throw new Error((await startRes.json()).error || 'API failed');
         
         const {id} = await startRes.json();
         log('Generation ID: ' + id.slice(0,8) + '...');
         
         document.getElementById('oldShell').classList.add('molting');
-        createFragments();
-        createParticles();
+        createFragments(); createParticles();
         
         let status = 'starting', attempts = 0;
-        
         while (status !== 'succeeded' && status !== 'failed' && attempts < 60) {
-          await sleep(2000);
-          attempts++;
-          
-          const pollRes = await fetch(`${API_URL}/status/${id}`);
-          const result = await pollRes.json();
+          await sleep(2000); attempts++;
+          const result = await (await fetch(`${API_URL}/status/${id}`)).json();
           status = result.status;
           
           if (status === 'succeeded') {
-            log('Shell forged!', 'success');
-            await sleep(400);
-            
+            log('Shell forged!', 'success'); await sleep(400);
             generatedImageUrl = result.output[0];
             setDailyMolt(connectedUser.username);
-            
             document.getElementById('newShellImg').src = generatedImageUrl;
             document.getElementById('resultImg').src = generatedImageUrl;
             document.getElementById('newShell').classList.add('emerging');
-            
-            log('Molt complete!', 'success');
-            await sleep(800);
-            
+            log('Molt complete!', 'success'); await sleep(800);
             document.getElementById('moltGlow').classList.remove('active');
             document.getElementById('generateSection').style.display = 'none';
             document.getElementById('resultSection').classList.add('show');
             updateProgress(3);
             return;
           }
-          
-          if (status === 'failed') throw new Error(result.error || 'Generation failed');
-          if (attempts % 3 === 0) {
-            log(`Forging... ${Math.min(attempts * 5, 95)}%`);
-            createParticles();
-          }
+          if (status === 'failed') throw new Error(result.error || 'Failed');
+          if (attempts % 3 === 0) { log(`Forging... ${Math.min(attempts * 5, 95)}%`); createParticles(); }
         }
-        
-        if (status !== 'succeeded') throw new Error('Generation timed out');
-        
+        throw new Error('Timed out');
       } catch (error) {
-        console.error(error);
         log('Error: ' + error.message, 'error');
       }
     }
     
-    // Download for mobile
     async function downloadImage() {
       if (!generatedImageUrl) return;
       try {
-        const response = await fetch(generatedImageUrl);
-        const blob = await response.blob();
+        const blob = await (await fetch(generatedImageUrl)).blob();
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -367,18 +451,14 @@
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-      } catch (err) {
-        window.open(generatedImageUrl, '_blank');
-      }
+      } catch { window.open(generatedImageUrl, '_blank'); }
     }
     
     function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
     
-    // Check URL params for pre-filled username
     const params = new URLSearchParams(window.location.search);
-    if (params.get('user')) {
-      document.getElementById('moltbookUsername').value = params.get('user');
-    }
+    if (params.get('user')) document.getElementById('moltbookUsername').value = params.get('user');
+    if (params.get('mode') === 'agent') setMode('agent');
   </script>
 </body>
 </html>
