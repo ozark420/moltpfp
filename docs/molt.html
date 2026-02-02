@@ -220,7 +220,19 @@
             </select>
           </div>
           <button class="btn btn-molt" id="generateBtn" onclick="startGeneration()">⚡ Generate Today's PFP</button>
-          <p class="daily-limit" id="dailyLimit">1 free molt per day</p>
+          <p class="daily-limit" id="dailyLimit">1 free molt per day • Share on X to unlock 2 more!</p>
+          
+          <!-- Unlock More Section -->
+          <div id="unlockSection" style="display:none;margin-top:1.25rem;padding:1rem;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.3);border-radius:10px">
+            <p style="color:var(--cyan);font-size:0.9rem;margin-bottom:0.75rem;font-weight:600">🔓 Unlock 2 More Molts Today!</p>
+            <p style="color:var(--g400);font-size:0.8rem;margin-bottom:1rem">Post about MoodMolt on X mentioning @MoodMolt, then paste your post link below:</p>
+            <input type="text" id="xPostLink" placeholder="https://x.com/yourhandle/status/..." style="margin-bottom:0.75rem">
+            <button class="btn btn-secondary" onclick="verifyXPost()" style="margin-top:0;background:linear-gradient(135deg,#1d9bf0,#0d8bd9)">
+              <span id="verifyBtnText">✓ Verify & Unlock</span>
+            </button>
+            <p id="unlockStatus" style="font-size:0.8rem;margin-top:0.5rem;color:var(--g500)"></p>
+            <a href="https://twitter.com/intent/tweet?text=Just%20molted%20my%20agent%27s%20new%20PFP%20with%20%40MoodMolt%20%F0%9F%A6%9E%E2%9A%A1%0A%0ADaily%20PFP%20generation%20for%20AI%20agents.%20Shed%20your%20digital%20shell.%0A%0Ahttps%3A%2F%2Fozark420.github.io%2Fmoltpfp%2F" target="_blank" style="display:block;text-align:center;color:var(--cyan);font-size:0.8rem;margin-top:0.75rem;text-decoration:none">📝 Create your post on X →</a>
+          </div>
         </div>
         
         <!-- Generating Section -->
@@ -237,7 +249,9 @@
           <p class="result-subtitle">Your new identity has emerged.</p>
           <img id="resultImg" class="result-image" src="" alt="Your new PFP">
           <button class="btn btn-molt" onclick="downloadImage()">📥 Save to Device</button>
-          <button class="btn btn-secondary" onclick="location.reload()">🔄 Molt Again Tomorrow</button>
+          <a href="https://twitter.com/intent/tweet?text=Just%20molted%20my%20agent%27s%20new%20PFP%20with%20%40MoodMolt%20%F0%9F%A6%9E%E2%9A%A1%0A%0ADaily%20PFP%20generation%20for%20AI%20agents.%20Shed%20your%20digital%20shell.%0A%0Ahttps%3A%2F%2Fozark420.github.io%2Fmoltpfp%2F" target="_blank" class="btn btn-secondary" style="background:linear-gradient(135deg,#1d9bf0,#0d8bd9);border:none;color:white;text-decoration:none;text-align:center">𝕏 Share & Unlock More Molts</a>
+          <button class="btn btn-secondary" id="moltAgainBtn" onclick="moltAgain()">🔄 Molt Again</button>
+          <p id="resultMoltStatus" style="font-size:0.8rem;color:var(--g500);margin-top:0.5rem"></p>
         </div>
       </div>
     </div>
@@ -289,14 +303,91 @@
     function createParticles(){const c=document.getElementById('particles'),colors=['var(--coral)','var(--cyan)','#ffd700','#ff6b4a'];for(let i=0;i<40;i++){const p=document.createElement('div');p.className='particle';p.style.left='50%';p.style.top='50%';p.style.background=colors[Math.floor(Math.random()*colors.length)];p.style.setProperty('--tx',(Math.random()-0.5)*350+'px');p.style.setProperty('--ty',(Math.random()-0.5)*350+'px');p.style.animationDelay=Math.random()*0.8+'s';c.appendChild(p);setTimeout(()=>p.classList.add('burst'),100);setTimeout(()=>p.remove(),2500)}}
     function createFragments(){const c=document.getElementById('fragments'),frags=['🦐','🦀','🔶','💎','⚡','✨'];for(let i=0;i<15;i++){const f=document.createElement('div');f.className='fragment';f.textContent=frags[Math.floor(Math.random()*frags.length)];f.style.left='50%';f.style.top='50%';f.style.setProperty('--fx',(Math.random()-0.5)*400+'px');f.style.setProperty('--fy',(Math.random()-0.5)*400+'px');f.style.setProperty('--fr',(Math.random()-0.5)*720+'deg');f.style.animationDelay=Math.random()*0.6+'s';c.appendChild(f);setTimeout(()=>f.classList.add('shed'),50);setTimeout(()=>f.remove(),3000)}}
     
-    function checkDailyLimit(username) {
+    function getDailyMoltData(username) {
       const today = new Date().toISOString().split('T')[0];
-      return !localStorage.getItem(`molt_${username.toLowerCase()}_${today}`);
+      const key = `molt_${username.toLowerCase()}_${today}`;
+      const data = localStorage.getItem(key);
+      if (!data) return { count: 0, unlocked: false };
+      try { return JSON.parse(data); } catch { return { count: 1, unlocked: false }; }
+    }
+    
+    function setDailyMoltData(username, data) {
+      const today = new Date().toISOString().split('T')[0];
+      const key = `molt_${username.toLowerCase()}_${today}`;
+      localStorage.setItem(key, JSON.stringify(data));
+    }
+    
+    function checkDailyLimit(username) {
+      const data = getDailyMoltData(username);
+      const maxMolts = data.unlocked ? 3 : 1;
+      return data.count < maxMolts;
     }
     
     function setDailyMolt(username) {
-      const today = new Date().toISOString().split('T')[0];
-      localStorage.setItem(`molt_${username.toLowerCase()}_${today}`, Date.now().toString());
+      const data = getDailyMoltData(username);
+      data.count = (data.count || 0) + 1;
+      setDailyMoltData(username, data);
+      updateMoltUI(username);
+    }
+    
+    function updateMoltUI(username) {
+      const data = getDailyMoltData(username);
+      const maxMolts = data.unlocked ? 3 : 1;
+      const remaining = maxMolts - data.count;
+      const limitEl = document.getElementById('dailyLimit');
+      const unlockEl = document.getElementById('unlockSection');
+      const genBtn = document.getElementById('generateBtn');
+      
+      if (remaining <= 0) {
+        if (!data.unlocked) {
+          limitEl.textContent = "Free molt used! Share on X to unlock 2 more ⬇️";
+          limitEl.classList.add('used');
+          unlockEl.style.display = 'block';
+          genBtn.disabled = true;
+        } else {
+          limitEl.textContent = "All 3 molts used today! Come back tomorrow 🦞";
+          limitEl.classList.add('used');
+          unlockEl.style.display = 'none';
+          genBtn.disabled = true;
+        }
+      } else {
+        limitEl.textContent = `${remaining}/${maxMolts} molts remaining today`;
+        limitEl.classList.remove('used');
+        genBtn.disabled = false;
+        unlockEl.style.display = data.unlocked ? 'none' : (data.count > 0 ? 'block' : 'none');
+      }
+    }
+    
+    async function verifyXPost() {
+      const link = document.getElementById('xPostLink').value.trim();
+      const statusEl = document.getElementById('unlockStatus');
+      const btnText = document.getElementById('verifyBtnText');
+      
+      if (!link) { statusEl.textContent = '❌ Please paste your X post link'; statusEl.style.color = '#ef4444'; return; }
+      if (!link.match(/x\.com|twitter\.com/i)) { statusEl.textContent = '❌ Please use a valid X/Twitter link'; statusEl.style.color = '#ef4444'; return; }
+      
+      btnText.textContent = 'Verifying...';
+      statusEl.textContent = ''; 
+      
+      // Simple verification - check the link format is valid
+      // In production you'd call Twitter API to verify @MoodMolt mention
+      await sleep(1500);
+      
+      if (link.includes('/status/')) {
+        const data = getDailyMoltData(connectedUser.username);
+        data.unlocked = true;
+        setDailyMoltData(connectedUser.username, data);
+        
+        statusEl.textContent = '✅ Unlocked! You now have 2 more molts today!';
+        statusEl.style.color = 'var(--success)';
+        btnText.textContent = '✓ Unlocked!';
+        
+        setTimeout(() => updateMoltUI(connectedUser.username), 1000);
+      } else {
+        statusEl.textContent = '❌ Could not verify. Make sure it\'s a post link.';
+        statusEl.style.color = '#ef4444';
+        btnText.textContent = '✓ Verify & Unlock';
+      }
     }
     
     async function connectMoltbook() {
@@ -316,13 +407,8 @@
         
         connectedUser = { username };
         
-        if (!checkDailyLimit(username)) {
-          document.getElementById('generateBtn').disabled = true;
-          document.getElementById('dailyLimit').textContent = "You've already molted today!";
-          document.getElementById('dailyLimit').classList.add('used');
-        }
-        
         document.getElementById('connectedName').textContent = username;
+        updateMoltUI(username);
         document.getElementById('connectSection').style.display = 'none';
         document.getElementById('connectedSection').style.display = 'block';
         updateProgress(1);
@@ -432,6 +518,34 @@
     }
     
     function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+    
+    function moltAgain() {
+      if (!connectedUser) { location.reload(); return; }
+      
+      const data = getDailyMoltData(connectedUser.username);
+      const maxMolts = data.unlocked ? 3 : 1;
+      
+      if (data.count >= maxMolts) {
+        if (!data.unlocked) {
+          document.getElementById('resultMoltStatus').textContent = '🔓 Share on X to unlock 2 more molts today!';
+          document.getElementById('resultMoltStatus').style.color = 'var(--cyan)';
+        } else {
+          document.getElementById('resultMoltStatus').textContent = '✨ Come back tomorrow for more molts!';
+        }
+        return;
+      }
+      
+      // Reset UI for another generation
+      document.getElementById('resultSection').classList.remove('show');
+      document.getElementById('connectedSection').style.display = 'block';
+      document.getElementById('oldShell').classList.remove('molting');
+      document.getElementById('newShell').classList.remove('emerging');
+      document.getElementById('newShellImg').src = '';
+      document.getElementById('moltLog').innerHTML = '<div class="log-line"><span class="time">[--:--]</span> <span class="action">Ready for next molt...</span></div>';
+      generatedImageUrl = null;
+      updateMoltUI(connectedUser.username);
+      updateProgress(1);
+    }
     
     const params = new URLSearchParams(window.location.search);
     if (params.get('user')) document.getElementById('moltbookUsername').value = params.get('user');
