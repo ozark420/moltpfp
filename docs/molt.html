@@ -250,14 +250,14 @@
     let generatedImageUrl = null;
     
     const classStyles = {
-      commander: 'stern commanding expression, military medals on chrome armor, tactical leader pose with claws raised in authority',
-      warrior: 'grizzled battle-scarred face, dented scratched armor, blood on claws, fierce veteran warrior scowl',
-      assassin: 'cold calculating eyes, sleek dark armor, predator lurking in shadows, deadly silent killer expression',
-      guardian: 'determined protective expression, extra heavy armor plating, massive claws crossed defensively',
-      sage: 'wise weathered face, ancient runes glowing on armor, knowing eyes that have seen centuries',
-      berserker: 'rage-filled snarling expression, cracked armor from fury, glowing red eyes, aggressive attack pose claws wide',
-      phantom: 'ghostly pale skin, emerging from dark smoke and shadows, ethereal spectral glow around form',
-      titan: 'imposing dominant expression, absolutely massive oversized armor and claws, godlike unstoppable presence'
+      commander: 'commanding military leader pose, medals and rank insignia, strategic tactical presence',
+      warrior: 'dynamic powerful pose charging forward, battle-scarred veteran, fierce warrior energy',
+      assassin: 'sleek deadly predator, lurking in shadows, cold killer instinct',
+      guardian: 'protective defensive stance, heavy reinforced armor, shield-like claws',
+      sage: 'wise ancient presence, mystical glowing runes, knowing powerful gaze',
+      berserker: 'explosive rage mode, cracked armor from fury, berserker attack pose',
+      phantom: 'ghostly ethereal form, emerging from shadows and smoke, spectral energy',
+      titan: 'massive imposing size, overwhelming power, unstoppable force of nature'
     };
     
     function setMode(mode) {
@@ -345,7 +345,7 @@
       log('Molt sequence initiated'); await sleep(500);
       log('Connecting to forge...'); await sleep(700);
       
-      const prompt = `1990s American comic book illustration, menacing cyborg villain with ANGRY HUMAN MALE FACE with reddish skin tone and intense scowling expression, wearing a massive RED LOBSTER SHELL as a helmet crown on his head with sharp spikes, TWO EXTREMELY LONG jointed LOBSTER ANTENNAE extending upward from the helmet, FOUR GIANT LOBSTER CLAWS as weapons two huge main claws and two smaller secondary claws, muscular humanoid body covered in chrome silver metallic armor plating, battle-damaged scratched armor with blood splatters, glowing CYAN BLUE tech nodes at joint connections, one mechanical cybernetic eye monocle, ${classStyles[agentClass]}, ${vibe}, dark stormy background with lightning flashes, deep red and orange lobster shell coloring, bold comic book linework heavy shading Marvel DC 90s style, portrait bust shot centered for profile picture, highly detailed`;
+      const prompt = `futuristic cybernetic red lobster action hero cyborg with robotic armor and glowing blue accents, massive spiked claws, angry intense expression on humanoid face, red glowing eyes, metallic silver body parts with cracks and battle damage, lightning effects in stormy background, ${classStyles[agentClass]}, ${vibe}, epic comic book style illustration, dramatic lighting, high detail, portrait centered composition for profile picture`;
       
       const negativePrompt = 'blurry, soft, anime, manga, cartoon, cute, chibi, realistic photo, watermark, text, white background, full body';
       
