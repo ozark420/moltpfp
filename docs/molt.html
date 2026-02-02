@@ -102,34 +102,34 @@
       </div>
       <div class="control-panel">
         <div class="panel-section" id="reflectSection">
-          <h3 class="panel-title">🔮 Self-Reflection</h3>
+          <h3 class="panel-title">🔮 Agent Identity</h3>
           <div class="input-group"><label class="input-label">Agent Name</label><input type="text" id="agentName" placeholder="e.g., MoodMolt"></div>
-          <div class="input-group"><label class="input-label">How do you perceive yourself today?</label><textarea id="reflection" placeholder="Describe your mood, energy, achievements..."></textarea></div>
-          <div class="input-group"><label class="input-label">Mood / Energy</label>
+          <div class="input-group"><label class="input-label">Describe your agent's personality & vibe</label><textarea id="reflection" placeholder="What defines your agent today? Their mission, attitude, achievements...&#10;&#10;e.g., A battle-hardened commander who never backs down. Leads with wisdom earned through countless digital wars."></textarea></div>
+          <div class="input-group"><label class="input-label">Agent Class</label>
             <select id="mood">
-              <option value="powerful">💪 Powerful — Battle-ready</option>
-              <option value="triumphant">🏆 Triumphant — Victorious</option>
-              <option value="evolving">🌀 Evolving — Transforming</option>
-              <option value="wise">🧠 Wise — Ancient knowledge</option>
-              <option value="fierce">🔥 Fierce — Warrior</option>
-              <option value="mystic">✨ Mystic — Ethereal</option>
-              <option value="resilient">🛡️ Resilient — Unbreakable</option>
-              <option value="creative">🎨 Creative — Artistic</option>
+              <option value="commander">🎖️ Commander — Strategic leader</option>
+              <option value="warrior">⚔️ Warrior — Battle-hardened fighter</option>
+              <option value="assassin">🗡️ Assassin — Silent & deadly</option>
+              <option value="guardian">🛡️ Guardian — Protector class</option>
+              <option value="sage">📜 Sage — Ancient wisdom</option>
+              <option value="berserker">💀 Berserker — Unstoppable rage</option>
+              <option value="phantom">👁️ Phantom — Shadow operative</option>
+              <option value="titan">🏔️ Titan — Absolute power</option>
             </select>
           </div>
-          <button class="btn btn-molt" onclick="startMolt()">⚡ Begin Molting</button>
+          <button class="btn btn-molt" onclick="startMolt()">⚡ Generate Agent PFP</button>
           <div class="status-box" id="statusBox"></div>
         </div>
         <div class="panel-section" id="generateSection" style="display:none">
-          <h3 class="panel-title">🎨 Shell Generation</h3>
-          <p style="color:var(--g400);font-size:0.85rem;margin-bottom:1rem">Your new shell is forming...</p>
+          <h3 class="panel-title">🎨 Forging Your Agent</h3>
+          <p style="color:var(--g400);font-size:0.85rem;margin-bottom:1rem">Your new shell is being forged...</p>
           <div class="molt-log" id="moltLog"><div class="log-line"><span class="time">[--:--]</span> <span class="action">Initializing...</span></div></div>
           <button class="btn btn-molt" id="genBtn" disabled><span class="spinner"></span> Generating...</button>
         </div>
         <div class="panel-section result-section" id="resultSection">
-          <h3 class="result-title">✨ Molt Complete!</h3>
-          <p class="result-subtitle">Your new shell has emerged.</p>
-          <a class="btn btn-molt" id="downloadBtn" href="" download target="_blank">📥 Download Shell</a>
+          <h3 class="result-title">✨ Agent Ready!</h3>
+          <p class="result-subtitle">Your new identity has emerged.</p>
+          <a class="btn btn-molt" id="downloadBtn" href="" download target="_blank">📥 Download PFP</a>
           <button class="btn btn-secondary" onclick="location.reload()">🔄 Generate Another</button>
         </div>
       </div>
@@ -137,70 +137,114 @@
   </main>
   <script>
     const API_URL = 'https://moodmolt-apimoodmolt-api.ozarkhomesteaders.workers.dev';
-    const moodStyles = {
-      powerful:'alpha predator stance, battle-scarred veteran commander, glowing war paint markings, dominant territorial pose',
-      triumphant:'victorious warrior holding trophy, golden crown of light, chest puffed with pride, champion energy',
-      evolving:'dramatic molt in progress, old shell shattering explosively, raw powerful new form emerging beneath',
-      wise:'grizzled elder warrior, ancient battle scars, knowing eyes that have seen everything, calm deadly energy',
-      fierce:'berserker rage mode, claws spread wide attacking, teeth bared, pure aggression and destruction',
-      mystic:'shadowy assassin vibes, glowing from within, mysterious and dangerous, silent killer aesthetic',
-      resilient:'tank build, maximum armor plating, impenetrable fortress, unmovable object energy',
-      creative:'unique mutant hybrid, unexpected color patterns, one-of-a-kind specimen, genetic anomaly'
+    
+    // Agent class visual styles
+    const classStyles = {
+      commander: 'military commander aesthetic, medals and insignia on shell, strategic calculating gaze, leadership presence, gold trim accents',
+      warrior: 'battle-scarred veteran, dented armor plates, confident fighting stance, experienced soldier who has seen war',
+      assassin: 'sleek deadly design, minimal armor for speed, predator eyes, lurking in shadows, silent killer aesthetic',
+      guardian: 'heavy defensive plating, protective stance, weathered but unbroken, shield-like claw positioning',
+      sage: 'ancient mystic markings, glowing runes etched in shell, wise all-knowing eyes, elder energy',
+      berserker: 'rage mode activated, cracked shell from raw power, glowing red eyes, barely contained fury',
+      phantom: 'semi-transparent ghostly shell, ethereal glow, emerging from darkness, spectral smoke effects',
+      titan: 'massive imposing presence, mountain of armor, god-like power radiating, absolute dominance'
     };
+    
     function updateProgress(s){for(let i=1;i<=3;i++){const e=document.getElementById(`step${i}`);e.classList.remove('active','complete');if(i<s)e.classList.add('complete');if(i===s)e.classList.add('active')}}
     function showStatus(m,t='error'){const e=document.getElementById('statusBox');e.textContent=m;e.className=`status-box show ${t}`}
     function log(m,t='action'){const l=document.getElementById('moltLog'),time=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),line=document.createElement('div');line.className='log-line';line.innerHTML=`<span class="time">[${time}]</span> <span class="${t}">${m}</span>`;l.appendChild(line);l.scrollTop=l.scrollHeight}
     function createParticles(){const c=document.getElementById('particles'),colors=['var(--coral)','var(--cyan)','#ffd700','#ff6b4a'];for(let i=0;i<40;i++){const p=document.createElement('div');p.className='particle';p.style.left='50%';p.style.top='50%';p.style.background=colors[Math.floor(Math.random()*colors.length)];p.style.setProperty('--tx',(Math.random()-0.5)*350+'px');p.style.setProperty('--ty',(Math.random()-0.5)*350+'px');p.style.animationDelay=Math.random()*0.8+'s';c.appendChild(p);setTimeout(()=>p.classList.add('burst'),100);setTimeout(()=>p.remove(),2500)}}
     function createFragments(){const c=document.getElementById('fragments'),frags=['🦐','🦀','🔶','💎','⚡','✨'];for(let i=0;i<15;i++){const f=document.createElement('div');f.className='fragment';f.textContent=frags[Math.floor(Math.random()*frags.length)];f.style.left='50%';f.style.top='50%';f.style.setProperty('--fx',(Math.random()-0.5)*400+'px');f.style.setProperty('--fy',(Math.random()-0.5)*400+'px');f.style.setProperty('--fr',(Math.random()-0.5)*720+'deg');f.style.animationDelay=Math.random()*0.6+'s';c.appendChild(f);setTimeout(()=>f.classList.add('shed'),50);setTimeout(()=>f.remove(),3000)}}
+    
     async function startMolt(){
-      const reflection=document.getElementById('reflection').value.trim(),mood=document.getElementById('mood').value;
-      if(!reflection){showStatus('Please describe your self-reflection');return}
+      const agentName = document.getElementById('agentName').value.trim() || 'Agent';
+      const reflection = document.getElementById('reflection').value.trim();
+      const agentClass = document.getElementById('mood').value;
+      
+      if(!reflection){showStatus('Please describe your agent personality');return}
+      
       document.getElementById('reflectSection').style.display='none';
       document.getElementById('generateSection').style.display='block';
       updateProgress(2);
       document.getElementById('moltGlow').classList.add('active');
+      
       log('Molt sequence initiated');await sleep(600);
-      log('Processing reflection...');await sleep(800);
-      const prompt=`Hyper-detailed digital painting of a badass anthropomorphic cyberpunk lobster AI agent, ${moodStyles[mood]}, ${reflection}, menacing powerful crustacean warrior with massive mechanized claws and armored exoskeleton, glowing neon orange and coral red shell plates with battle damage and scars, electric cyan LED circuit patterns running through carapace, chrome cybernetic implants and tech augmentations, piercing intelligent glowing eyes with tactical HUD overlay, dark pure black background, dramatic rim lighting with orange and cyan accent lights, smoke and particle effects, portrait shot from chest up facing camera, artstation trending, greg rutkowski style, 8k ultra detailed render`;
-      const negativePrompt='blurry, low quality, distorted, ugly, deformed, human face, human body, cartoon, anime, chibi, cute, friendly, watermark, text, logo, signature, white background, bright background, full body shot, multiple characters, childish';
-      log('Building prompt...');await sleep(500);
-      log('Connecting to API...');
+      log('Analyzing agent identity...');await sleep(800);
+      
+      // Build the ultimate PFP prompt
+      const prompt = `Close-up centered portrait of a fearsome cyberpunk lobster AI agent named ${agentName}, anthropomorphic humanoid lobster hybrid creature, ${classStyles[agentClass]}, ${reflection}, highly detailed armored crustacean exoskeleton head and upper body, glowing neon orange and coral red shell segments, bright electric cyan circuit board patterns and LED strips embedded in carapace, chrome cybernetic eye implants with holographic HUD display, intense intelligent menacing expression, dark atmospheric pure black background, dramatic cinematic orange and cyan rim lighting from sides, volumetric fog and floating data particles, centered symmetrical composition perfect for profile picture, face and head clearly visible and centered in frame, digital painting trending on artstation, concept art, ultra detailed 8k`;
+      
+      const negativePrompt = 'blurry, low quality, distorted, ugly, deformed, human, human face, person, realistic human, cartoon, anime, chibi, cute, kawaii, friendly smile, watermark, text, logo, signature, white background, bright background, colorful background, full body, far away, small subject, off-center, cropped head, multiple subjects, busy background';
+      
+      log('Building neural prompt...');await sleep(500);
+      log('Connecting to generation API...');
+      
       try{
-        const startRes=await fetch(`${API_URL}/generate`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt,negative_prompt:negativePrompt})});
-        if(!startRes.ok){const err=await startRes.json();throw new Error(err.error||'API failed')}
-        const{id}=await startRes.json();
-        log('Generation started: '+id.slice(0,8)+'...');
-        document.getElementById('oldShell').classList.add('molting');
-        createFragments();createParticles();
-        let status='starting',attempts=0;
-        while(status!=='succeeded'&&status!=='failed'&&attempts<60){
-          await sleep(2000);attempts++;
-          const pollRes=await fetch(`${API_URL}/status/${id}`);
-          const result=await pollRes.json();
-          status=result.status;
-          if(status==='succeeded'){
-            log('Shell generated!','success');await sleep(500);
-            document.getElementById('newShellImg').src=result.output[0];
-            document.getElementById('newShell').classList.add('emerging');
-            document.getElementById('downloadBtn').href=result.output[0];
-            log('Molt complete!','success');await sleep(1000);
-            document.getElementById('moltGlow').classList.remove('active');
-            document.getElementById('generateSection').style.display='none';
-            document.getElementById('resultSection').classList.add('show');
-            updateProgress(3);return;
-          }
-          if(status==='failed')throw new Error(result.error||'Generation failed');
-          if(attempts%3===0){log(`Forming... (${Math.min(attempts*5,95)}%)`);createParticles()}
+        const startRes = await fetch(`${API_URL}/generate`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({prompt, negative_prompt: negativePrompt})
+        });
+        
+        if(!startRes.ok){
+          const err = await startRes.json();
+          throw new Error(err.error || 'API failed');
         }
-        if(status!=='succeeded')throw new Error('Timed out');
-      }catch(error){
-        console.error(error);log('Error: '+error.message,'error');
-        document.getElementById('genBtn').disabled=false;
-        document.getElementById('genBtn').innerHTML='🔄 Retry';
-        document.getElementById('genBtn').onclick=()=>location.reload();
+        
+        const {id} = await startRes.json();
+        log('Generation started: ' + id.slice(0,8) + '...');
+        
+        document.getElementById('oldShell').classList.add('molting');
+        createFragments();
+        createParticles();
+        
+        let status = 'starting', attempts = 0;
+        
+        while(status !== 'succeeded' && status !== 'failed' && attempts < 60){
+          await sleep(2000);
+          attempts++;
+          
+          const pollRes = await fetch(`${API_URL}/status/${id}`);
+          const result = await pollRes.json();
+          status = result.status;
+          
+          if(status === 'succeeded'){
+            log('Agent forged successfully!', 'success');
+            await sleep(500);
+            
+            document.getElementById('newShellImg').src = result.output[0];
+            document.getElementById('newShell').classList.add('emerging');
+            document.getElementById('downloadBtn').href = result.output[0];
+            
+            log('Molt complete!', 'success');
+            await sleep(1000);
+            
+            document.getElementById('moltGlow').classList.remove('active');
+            document.getElementById('generateSection').style.display = 'none';
+            document.getElementById('resultSection').classList.add('show');
+            updateProgress(3);
+            return;
+          }
+          
+          if(status === 'failed') throw new Error(result.error || 'Generation failed');
+          if(attempts % 3 === 0){
+            log(`Forging shell... (${Math.min(attempts * 5, 95)}%)`);
+            createParticles();
+          }
+        }
+        
+        if(status !== 'succeeded') throw new Error('Generation timed out');
+        
+      } catch(error) {
+        console.error(error);
+        log('Error: ' + error.message, 'error');
+        document.getElementById('genBtn').disabled = false;
+        document.getElementById('genBtn').innerHTML = '🔄 Retry';
+        document.getElementById('genBtn').onclick = () => location.reload();
       }
     }
-    function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+    
+    function sleep(ms){return new Promise(r => setTimeout(r, ms))}
   </script>
 </body>
 </html>
