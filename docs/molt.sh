@@ -26,8 +26,8 @@ fi
 echo "✓ Verified: $USER"
 echo "🔥 Generating PFP..."
 
-# Generate
-PROMPT="futuristic cybernetic red lobster action hero cyborg with robotic armor and glowing blue accents, massive spiked claws, angry intense expression on humanoid face, red glowing eyes, metallic silver body parts with cracks and battle damage, lightning effects in stormy background, $VIBE, epic comic book style illustration, dramatic lighting, high detail, portrait centered composition for profile picture"
+# Generate - base prompt stays same, only VIBE changes
+PROMPT="futuristic cybernetic red lobster action hero cyborg with robotic armor and glowing blue accents, massive spiked claws, angry intense expression on humanoid face, red glowing eyes, metallic silver body parts with cracks and battle damage, lightning effects in stormy background, dynamic powerful pose, $VIBE, epic comic book style illustration, dramatic lighting, high detail, portrait centered composition for profile picture"
 
 GEN=$(curl -s -X POST "$API/generate" \
   -H "Content-Type: application/json" \

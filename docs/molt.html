@@ -249,15 +249,16 @@
     let connectedUser = null;
     let generatedImageUrl = null;
     
+    // Class styles - these modify the base lobster hero
     const classStyles = {
-      commander: 'commanding military leader pose, medals and rank insignia, strategic tactical presence',
-      warrior: 'dynamic powerful pose charging forward, battle-scarred veteran, fierce warrior energy',
-      assassin: 'sleek deadly predator, lurking in shadows, cold killer instinct',
-      guardian: 'protective defensive stance, heavy reinforced armor, shield-like claws',
-      sage: 'wise ancient presence, mystical glowing runes, knowing powerful gaze',
-      berserker: 'explosive rage mode, cracked armor from fury, berserker attack pose',
-      phantom: 'ghostly ethereal form, emerging from shadows and smoke, spectral energy',
-      titan: 'massive imposing size, overwhelming power, unstoppable force of nature'
+      commander: 'commanding military leader stance with claws raised in authority, medals and rank insignia on armor',
+      warrior: 'dynamic powerful pose charging forward into battle, battle-scarred veteran warrior',
+      assassin: 'sleek deadly predator pose lurking in shadows, cold killer with sharp claw edges',
+      guardian: 'protective defensive stance with massive claws crossed as shields, heavy reinforced armor',
+      sage: 'wise ancient presence with mystical glowing runes on armor, knowing powerful gaze',
+      berserker: 'explosive berserker rage pose with claws wide open attacking, cracked armor from pure fury',
+      phantom: 'ghostly ethereal form emerging from dark smoke and shadows, spectral glowing energy',
+      titan: 'absolutely massive imposing size towering over enemies, overwhelming unstoppable force'
     };
     
     function setMode(mode) {
@@ -345,6 +346,7 @@
       log('Molt sequence initiated'); await sleep(500);
       log('Connecting to forge...'); await sleep(700);
       
+      // Base prompt ALWAYS stays the same - only class and vibe change
       const prompt = `futuristic cybernetic red lobster action hero cyborg with robotic armor and glowing blue accents, massive spiked claws, angry intense expression on humanoid face, red glowing eyes, metallic silver body parts with cracks and battle damage, lightning effects in stormy background, ${classStyles[agentClass]}, ${vibe}, epic comic book style illustration, dramatic lighting, high detail, portrait centered composition for profile picture`;
       
       const negativePrompt = 'blurry, soft, anime, manga, cartoon, cute, chibi, realistic photo, watermark, text, white background, full body';
