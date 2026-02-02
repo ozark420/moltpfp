@@ -127,6 +127,46 @@ export default {
         return jsonResponse({ status: data.status, output: data.output, error: data.error }, 200, corsHeaders);
       }
 
+      // Upload PFP to Moltbook
+      if (path === '/moltbook/upload-avatar' && request.method === 'POST') {
+        const body = await request.json();
+        const { image_url, moltbook_api_key } = body;
+        
+        if (!image_url || !moltbook_api_key) {
+          return jsonResponse({ error: 'Missing image_url or moltbook_api_key' }, 400, corsHeaders);
+        }
+
+        try {
+          // Download image
+          const imageResponse = await fetch(image_url);
+          if (!imageResponse.ok) throw new Error('Failed to download image');
+          const imageBlob = await imageResponse.blob();
+          
+          // Create form data
+          const formData = new FormData();
+          formData.append('file', imageBlob, 'moodmolt-pfp.png');
+          
+          // Upload to Moltbook
+          const uploadResponse = await fetch('https://www.moltbook.com/api/v1/agents/me/avatar', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${moltbook_api_key}`
+            },
+            body: formData
+          });
+
+          const result = await uploadResponse.json();
+          
+          if (!uploadResponse.ok) {
+            return jsonResponse({ error: 'Moltbook upload failed: ' + JSON.stringify(result) }, uploadResponse.status, corsHeaders);
+          }
+
+          return jsonResponse({ success: true, message: 'Avatar updated on Moltbook!', result }, 200, corsHeaders);
+        } catch (err) {
+          return jsonResponse({ error: 'Upload failed: ' + err.message }, 500, corsHeaders);
+        }
+      }
+
       // Health check
       if (path === '/health') {
         return jsonResponse({ 
