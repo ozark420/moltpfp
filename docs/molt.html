@@ -361,12 +361,30 @@
         
         if (!startRes.ok) throw new Error((await startRes.json()).error || 'API failed');
         
-        const {id} = await startRes.json();
-        log('Generation ID: ' + id.slice(0,8) + '...');
+        const genData = await startRes.json();
+        const id = genData.id;
+        log('Generation started...');
         
         document.getElementById('oldShell').classList.add('molting');
         createFragments(); createParticles();
         
+        // Check if Grok (synchronous - already has result)
+        if (genData.status === 'succeeded' && genData.output) {
+          log('Shell forged!', 'success'); await sleep(400);
+          generatedImageUrl = genData.output[0];
+          setDailyMolt(connectedUser.username);
+          document.getElementById('newShellImg').src = generatedImageUrl;
+          document.getElementById('resultImg').src = generatedImageUrl;
+          document.getElementById('newShell').classList.add('emerging');
+          log('Molt complete!', 'success'); await sleep(800);
+          document.getElementById('moltGlow').classList.remove('active');
+          document.getElementById('generateSection').style.display = 'none';
+          document.getElementById('resultSection').classList.add('show');
+          updateProgress(3);
+          return;
+        }
+        
+        // Replicate (async - poll for result)
         let status = 'starting', attempts = 0;
         while (status !== 'succeeded' && status !== 'failed' && attempts < 60) {
           await sleep(2000); attempts++;
