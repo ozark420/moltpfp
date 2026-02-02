@@ -27,7 +27,7 @@ echo "✓ Verified: $USER"
 echo "🔥 Generating PFP..."
 
 # Generate
-PROMPT="American comic book style illustration of a menacing humanoid lobster cyborg villain, $VIBE, angry human face with lobster helmet crown, chrome armor, glowing cyan tech nodes, dark stormy background, centered portrait square format"
+PROMPT="American comic book style illustration of a menacing humanoid LOBSTER cyborg villain, 70% LOBSTER 30% human hybrid, prominent large RED LOBSTER CARAPACE SHELL helmet with spikes, TWO VERY LONG segmented ANTENNAE, FOUR MASSIVE RED-ORANGE LOBSTER CLAWS, lobster exoskeleton texture, beady lobster eyes plus cybernetic eye, lobster mandibles visible, crimson red shell, chrome cybernetic implants, glowing cyan circuits, $VIBE, stormy dark background, 1990s Marvel DC comic style, centered portrait profile picture"
 
 GEN=$(curl -s -X POST "$API/generate" \
   -H "Content-Type: application/json" \
