@@ -308,7 +308,14 @@
       const key = `molt_${username.toLowerCase()}_${today}`;
       const data = localStorage.getItem(key);
       if (!data) return { count: 0, unlocked: false };
-      try { return JSON.parse(data); } catch { return { count: 1, unlocked: false }; }
+      try { 
+        const parsed = JSON.parse(data);
+        // Ensure proper format
+        return { count: parsed.count || 0, unlocked: parsed.unlocked || false };
+      } catch { 
+        // Old format was just a timestamp - migrate to new format (count: 1)
+        return { count: 1, unlocked: false }; 
+      }
     }
     
     function setDailyMoltData(username, data) {
@@ -550,6 +557,7 @@
     const params = new URLSearchParams(window.location.search);
     if (params.get('user')) document.getElementById('moltbookUsername').value = params.get('user');
     if (params.get('mode') === 'agent') setMode('agent');
+    if (params.get('reset')) { localStorage.clear(); location.href = location.pathname; }
   </script>
 </body>
 </html>
