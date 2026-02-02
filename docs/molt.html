@@ -251,14 +251,14 @@
     
     // Class styles - these modify the base lobster hero
     const classStyles = {
-      commander: 'commanding military leader stance with claws raised in authority, medals and rank insignia on armor',
-      warrior: 'dynamic powerful pose charging forward into battle, battle-scarred veteran warrior',
-      assassin: 'sleek deadly predator pose lurking in shadows, cold killer with sharp claw edges',
-      guardian: 'protective defensive stance with massive claws crossed as shields, heavy reinforced armor',
-      sage: 'wise ancient presence with mystical glowing runes on armor, knowing powerful gaze',
-      berserker: 'explosive berserker rage pose with claws wide open attacking, cracked armor from pure fury',
-      phantom: 'ghostly ethereal form emerging from dark smoke and shadows, spectral glowing energy',
-      titan: 'absolutely massive imposing size towering over enemies, overwhelming unstoppable force'
+      commander: 'commanding supreme military warlord stance with massive claws raised in dominating authority, medals rank insignia and battle honors adorning heavy chrome armor',
+      warrior: 'dynamic explosive combat pose charging forward into brutal battle, legendary battle-scarred veteran warrior with glowing war trophies',
+      assassin: 'sleek lethal apex predator pose emerging from darkness, cold ruthless killer with razor-sharp serrated claw edges dripping with energy',
+      guardian: 'immovable fortress stance with colossal claws crossed as impenetrable shields, ultra-reinforced siege armor crackling with defensive energy',
+      sage: 'ancient all-knowing presence radiating power with mystical glowing arcane runes covering armor, penetrating all-seeing gaze of infinite wisdom',
+      berserker: 'explosive unstoppable berserker rage with claws tearing through reality, shattered cracked armor from pure uncontainable fury and destruction',
+      phantom: 'terrifying ghostly wraith form materializing from swirling dark smoke and shadows, spectral energy tendrils and haunting ethereal glow',
+      titan: 'absolutely colossal god-like imposing presence towering over everything, overwhelming apocalyptic unstoppable force of pure devastation'
     };
     
     function setMode(mode) {
@@ -347,7 +347,7 @@
       log('Connecting to forge...'); await sleep(700);
       
       // Base prompt ALWAYS stays the same - only class and vibe change
-      const prompt = `futuristic cybernetic red lobster action hero cyborg with robotic armor and glowing blue accents, massive spiked claws, angry intense expression on humanoid face, red glowing eyes, metallic silver body parts with cracks and battle damage, lightning effects in stormy background, ${classStyles[agentClass]}, ${vibe}, epic comic book style illustration, dramatic lighting, high detail, portrait centered composition for profile picture`;
+      const prompt = `futuristic cybernetic RED LOBSTER action hero cyborg with heavy robotic armor plating and glowing neon blue circuit accents, MASSIVE SPIKED BATTLE CLAWS with energy cores, angry intense aggressive expression on humanoid armored face, blazing red glowing eyes with laser intensity, chrome metallic exoskeleton with battle scars cracks and war damage, epic lightning bolts and electrical energy effects crackling in electrifying stormy background, ${classStyles[agentClass]}, ${vibe}, hyper detailed masterpiece digital art, cinematic dramatic lighting with god rays, 8K ultra HD quality, epic superhero comic book style, portrait centered square composition perfect for profile picture`;
       
       const negativePrompt = 'blurry, soft, anime, manga, cartoon, cute, chibi, realistic photo, watermark, text, white background, full body';
       
