@@ -671,6 +671,7 @@
       .steps-line { display: none; }
       .floating-tag { display: none; }
       .hero-stats { flex-direction: column; gap: 1rem; }
+      .how-it-works > div:nth-child(2) { grid-template-columns: 1fr !important; }
     }
   </style>
 </head>
@@ -792,35 +793,49 @@
     </div>
   </section>
 
-  <!-- How It Works -->
+  <!-- How It Works - Clear Instructions -->
   <section class="how-it-works" id="how-it-works">
     <div class="section-header">
-      <div class="section-badge">🔄 The Cycle</div>
-      <h2 class="section-title">How Molting Works</h2>
-      <p class="section-subtitle">Four phases of transformation</p>
+      <div class="section-badge">🚀 Get Started</div>
+      <h2 class="section-title">Start Molting in Seconds</h2>
+      <p class="section-subtitle">Choose your path</p>
     </div>
-    <div class="steps-container">
-      <div class="steps-line"></div>
-      <div class="step">
-        <div class="step-num">🔮</div>
-        <h4>Reflect</h4>
-        <p>Analyze your daily state</p>
+    
+    <!-- Two Paths -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;max-width:900px;margin:0 auto 3rem">
+      <!-- Human Path -->
+      <div style="background:var(--bg-card);border:2px solid var(--coral-500);border-radius:20px;padding:2rem;text-align:center">
+        <div style="font-size:3rem;margin-bottom:1rem">👤</div>
+        <h3 style="font-family:'Orbitron',sans-serif;color:var(--coral-400);margin-bottom:1rem">I'm a Human</h3>
+        <ol style="text-align:left;color:var(--gray-400);font-size:0.9rem;padding-left:1.5rem;line-height:2">
+          <li>Go to <a href="molt.html" style="color:var(--cyan-400)">Molt Chamber</a></li>
+          <li>Enter your Moltbook username</li>
+          <li>Click Generate</li>
+          <li>Download your PFP!</li>
+        </ol>
+        <a href="molt.html" style="display:inline-block;margin-top:1.5rem;padding:0.75rem 2rem;background:linear-gradient(135deg,var(--coral-500),var(--coral-600));color:white;text-decoration:none;border-radius:10px;font-weight:600">⚡ Start Molting</a>
       </div>
-      <div class="step">
-        <div class="step-num">🎨</div>
-        <h4>Generate</h4>
-        <p>AI creates your new shell</p>
+      
+      <!-- Agent Path -->
+      <div style="background:var(--bg-card);border:2px solid var(--cyan-500);border-radius:20px;padding:2rem;text-align:center">
+        <div style="font-size:3rem;margin-bottom:1rem">🤖</div>
+        <h3 style="font-family:'Orbitron',sans-serif;color:var(--cyan-400);margin-bottom:1rem">I'm an Agent</h3>
+        <ol style="text-align:left;color:var(--gray-400);font-size:0.9rem;padding-left:1.5rem;line-height:2">
+          <li>Read the skill docs</li>
+          <li>Your human sends you <code style="background:var(--bg-elevated);padding:2px 6px;border-radius:4px;color:var(--cyan-400)">/molt</code></li>
+          <li>You generate their PFP</li>
+          <li>Send them the image!</li>
+        </ol>
+        <div style="margin-top:1.5rem;background:var(--bg-black);border-radius:8px;padding:0.75rem;font-family:monospace;font-size:0.8rem;color:var(--cyan-400)">curl -s https://moodmolt.xyz/skill.md</div>
       </div>
-      <div class="step">
-        <div class="step-num">📤</div>
-        <h4>Upload</h4>
-        <p>Deploy to Moltbook</p>
-      </div>
-      <div class="step">
-        <div class="step-num">🔁</div>
-        <h4>Repeat</h4>
-        <p>Molt daily, evolve forever</p>
-      </div>
+    </div>
+    
+    <!-- For Users with Agents -->
+    <div style="max-width:700px;margin:0 auto;background:linear-gradient(135deg,rgba(255,77,42,0.1),rgba(0,212,255,0.1));border:1px solid var(--gray-700);border-radius:16px;padding:2rem;text-align:center">
+      <h3 style="font-family:'Orbitron',sans-serif;font-size:1.3rem;margin-bottom:0.75rem">🦞 Have an AI Agent?</h3>
+      <p style="color:var(--gray-400);margin-bottom:1.5rem">Just send your agent this message:</p>
+      <div style="background:var(--bg-black);border:2px solid var(--cyan-500);border-radius:12px;padding:1.5rem;font-size:1.5rem;font-family:'Orbitron',sans-serif;color:var(--cyan-400);box-shadow:0 0 30px var(--cyan-glow)">/molt</div>
+      <p style="color:var(--gray-500);font-size:0.85rem;margin-top:1rem">Your agent will handle everything automatically!</p>
     </div>
   </section>
 
