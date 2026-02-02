@@ -138,14 +138,14 @@
   <script>
     const API_URL = 'https://moodmolt-apimoodmolt-api.ozarkhomesteaders.workers.dev';
     const moodStyles = {
-      powerful:'battle-ready commanding stance with massive armored claws raised, crackling energy aura, war general presence',
-      triumphant:'victorious pose bathed in radiant golden light rays, crown of pure energy, conquering champion',
-      evolving:'mid-transformation scene, old shell cracking and falling away, new form emerging with energy wisps',
-      wise:'ancient sage presence, glowing runes on shell, mystical symbols floating nearby',
-      fierce:'aggressive warrior stance, sharp spines, glowing red eyes, battle scars pulsing with energy',
-      mystic:'ethereal floating pose, cosmic stardust particles, bioluminescent patterns, dreamlike quality',
-      resilient:'defensive stance, heavily armored shell, weathered but unbroken, inner light through cracks',
-      creative:'swirls of prismatic color emanating, kaleidoscopic shell patterns, creative energy flows'
+      powerful:'alpha predator stance, battle-scarred veteran commander, glowing war paint markings, dominant territorial pose',
+      triumphant:'victorious warrior holding trophy, golden crown of light, chest puffed with pride, champion energy',
+      evolving:'dramatic molt in progress, old shell shattering explosively, raw powerful new form emerging beneath',
+      wise:'grizzled elder warrior, ancient battle scars, knowing eyes that have seen everything, calm deadly energy',
+      fierce:'berserker rage mode, claws spread wide attacking, teeth bared, pure aggression and destruction',
+      mystic:'shadowy assassin vibes, glowing from within, mysterious and dangerous, silent killer aesthetic',
+      resilient:'tank build, maximum armor plating, impenetrable fortress, unmovable object energy',
+      creative:'unique mutant hybrid, unexpected color patterns, one-of-a-kind specimen, genetic anomaly'
     };
     function updateProgress(s){for(let i=1;i<=3;i++){const e=document.getElementById(`step${i}`);e.classList.remove('active','complete');if(i<s)e.classList.add('complete');if(i===s)e.classList.add('active')}}
     function showStatus(m,t='error'){const e=document.getElementById('statusBox');e.textContent=m;e.className=`status-box show ${t}`}
@@ -161,8 +161,8 @@
       document.getElementById('moltGlow').classList.add('active');
       log('Molt sequence initiated');await sleep(600);
       log('Processing reflection...');await sleep(800);
-      const prompt=`Masterpiece digital art portrait of a powerful cyberpunk crustacean character, ${moodStyles[mood]}, ${reflection}, massive detailed exoskeleton with glowing neon coral red and orange segments, bright cyan bioluminescent circuit patterns and tech enhancements, chrome metallic armor plating, intense glowing eyes, deep pure black void background with subtle holographic grid, dramatic cinematic lighting with god-rays from below, floating energy particles, highly detailed 8k, profile picture composition centered square format`;
-      const negativePrompt='blurry, low quality, distorted, ugly, human, face, cartoon, anime, watermark, text, logo, simple background, white background';
+      const prompt=`Hyper-detailed digital painting of a badass anthropomorphic cyberpunk lobster AI agent, ${moodStyles[mood]}, ${reflection}, menacing powerful crustacean warrior with massive mechanized claws and armored exoskeleton, glowing neon orange and coral red shell plates with battle damage and scars, electric cyan LED circuit patterns running through carapace, chrome cybernetic implants and tech augmentations, piercing intelligent glowing eyes with tactical HUD overlay, dark pure black background, dramatic rim lighting with orange and cyan accent lights, smoke and particle effects, portrait shot from chest up facing camera, artstation trending, greg rutkowski style, 8k ultra detailed render`;
+      const negativePrompt='blurry, low quality, distorted, ugly, deformed, human face, human body, cartoon, anime, chibi, cute, friendly, watermark, text, logo, signature, white background, bright background, full body shot, multiple characters, childish';
       log('Building prompt...');await sleep(500);
       log('Connecting to API...');
       try{
