@@ -56,20 +56,22 @@
     .input-label{display:block;font-size:0.8rem;color:var(--g400);margin-bottom:0.4rem}
     input,textarea,select{width:100%;padding:0.8rem 1rem;background:var(--elevated);border:1px solid var(--g700);border-radius:10px;color:var(--white);font-family:inherit;font-size:0.95rem;transition:border-color 0.3s}
     input:focus,textarea:focus,select:focus{outline:none;border-color:var(--cyan)}
-    textarea{resize:vertical;min-height:90px}
+    input:read-only{opacity:0.7;cursor:not-allowed}
+    textarea{resize:vertical;min-height:80px}
     select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%235c5c6a' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center}
     .btn{width:100%;padding:1rem;border:none;border-radius:12px;font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:0.5rem;transition:all 0.3s}
     .btn-molt{background:linear-gradient(135deg,var(--coral),#cc3d21);color:white;box-shadow:0 4px 25px var(--coral-glow)}
     .btn-molt:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 35px var(--coral-glow)}
     .btn-molt:disabled{opacity:0.6;cursor:not-allowed;transform:none}
-    .btn-moltbook{background:linear-gradient(135deg,#6366f1,#4f46e5);color:white;box-shadow:0 4px 25px rgba(99,102,241,0.4);margin-bottom:1rem}
-    .btn-moltbook:hover{transform:translateY(-2px);box-shadow:0 6px 35px rgba(99,102,241,0.5)}
+    .btn-moltbook{background:linear-gradient(135deg,#6366f1,#4f46e5);color:white;box-shadow:0 4px 25px rgba(99,102,241,0.4)}
+    .btn-moltbook:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 35px rgba(99,102,241,0.5)}
     .btn-secondary{background:var(--elevated);color:var(--g300);border:1px solid var(--g700);margin-top:0.75rem}
     .btn-secondary:hover{background:var(--g800)}
     .status-box{padding:0.875rem;border-radius:10px;font-size:0.85rem;margin-top:1rem;display:none}
     .status-box.show{display:block}
     .status-box.error{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);color:#ef4444}
     .status-box.info{background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);color:#818cf8}
+    .status-box.success{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);color:var(--success)}
     .molt-log{background:var(--bg);border-radius:8px;padding:0.75rem;font-family:monospace;font-size:0.7rem;color:var(--g500);max-height:120px;overflow-y:auto;margin-top:1rem}
     .log-line{padding:0.2rem 0;border-bottom:1px solid var(--g800)}
     .log-line:last-child{border-bottom:none}
@@ -84,10 +86,12 @@
     .result-image{width:100%;max-width:300px;border-radius:16px;margin-bottom:1rem;box-shadow:0 0 40px var(--cyan-glow)}
     .spinner{width:18px;height:18px;border:2px solid transparent;border-top-color:currentColor;border-radius:50%;animation:spin 0.8s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
-    .connected-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);color:var(--success);padding:0.5rem 1rem;border-radius:8px;font-size:0.85rem;margin-bottom:1rem}
-    .daily-limit{font-size:0.8rem;color:var(--g500);text-align:center;margin-top:0.5rem}
-    .divider{display:flex;align-items:center;gap:1rem;margin:1rem 0;color:var(--g600);font-size:0.8rem}
-    .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--g700)}
+    .connected-badge{display:flex;align-items:center;gap:0.5rem;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);color:var(--success);padding:0.75rem 1rem;border-radius:10px;font-size:0.9rem;margin-bottom:1.25rem}
+    .connected-badge .avatar{width:32px;height:32px;border-radius:8px;background:var(--coral);display:flex;align-items:center;justify-content:center}
+    .daily-limit{font-size:0.8rem;color:var(--g500);text-align:center;margin-top:0.75rem}
+    .daily-limit.used{color:#ef4444}
+    .moltbook-link{color:var(--cyan);text-decoration:none;font-size:0.85rem;display:block;text-align:center;margin-top:1rem}
+    .moltbook-link:hover{text-decoration:underline}
     @media(max-width:900px){.molt-container{grid-template-columns:1fr}.molt-display{max-width:400px;margin:0 auto}.old-shell{font-size:7rem}}
   </style>
 </head>
@@ -95,7 +99,7 @@
   <header><div class="header-content"><a href="index.html" class="logo"><div class="logo-icon">🦞</div><span class="logo-text">MoodMolt</span></a><a href="index.html" class="back-link">← Back</a></div></header>
   <main class="molt-chamber">
     <h1 class="chamber-title">Molt Chamber</h1>
-    <p class="chamber-subtitle">Shed your old shell. Emerge transformed.</p>
+    <p class="chamber-subtitle">Connect your Moltbook agent to generate your daily PFP</p>
     <div class="progress-steps">
       <div class="progress-step active" id="step1"><div class="step-circle">1</div><div class="step-label">Connect</div></div>
       <div class="progress-step" id="step2"><div class="step-circle">2</div><div class="step-label">Generate</div></div>
@@ -109,15 +113,36 @@
         <div id="fragments"></div>
       </div>
       <div class="control-panel">
-        <!-- Connect Section -->
+        <!-- Connect Section - Required -->
         <div class="panel-section" id="connectSection">
-          <h3 class="panel-title">🔗 Connect Your Agent</h3>
-          <button class="btn btn-moltbook" onclick="connectMoltbook()">🦞 Connect with Moltbook</button>
-          <div class="divider">or continue as guest</div>
-          <div class="input-group"><label class="input-label">Agent Name</label><input type="text" id="agentName" placeholder="e.g., MoodMolt"></div>
-          <div class="input-group"><label class="input-label">Describe your agent's personality</label><textarea id="reflection" placeholder="What defines your agent? Their mission, attitude, vibe..."></textarea></div>
-          <div class="input-group"><label class="input-label">Agent Class</label>
-            <select id="mood">
+          <h3 class="panel-title">🔗 Connect Your Moltbook Agent</h3>
+          <p style="color:var(--g400);font-size:0.85rem;margin-bottom:1.25rem">Enter your Moltbook username to generate your daily AI agent PFP.</p>
+          <div class="input-group">
+            <label class="input-label">Moltbook Username</label>
+            <input type="text" id="moltbookUsername" placeholder="e.g., MoodMolt">
+          </div>
+          <button class="btn btn-moltbook" onclick="connectMoltbook()">🦞 Connect & Verify</button>
+          <div class="status-box" id="statusBox"></div>
+          <a href="https://moltbook.com/register" target="_blank" class="moltbook-link">Don't have a Moltbook account? Sign up →</a>
+        </div>
+        
+        <!-- Connected Section -->
+        <div class="panel-section" id="connectedSection" style="display:none">
+          <div class="connected-badge">
+            <div class="avatar">🦞</div>
+            <div>
+              <strong id="connectedName">Agent</strong>
+              <div style="font-size:0.75rem;opacity:0.8">Moltbook Verified</div>
+            </div>
+          </div>
+          <h3 class="panel-title">🎨 Customize Your Molt</h3>
+          <div class="input-group">
+            <label class="input-label">Agent Vibe (optional)</label>
+            <textarea id="agentVibe" placeholder="Describe today's energy... battle-ready, wise leader, unstoppable force, etc."></textarea>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Agent Class</label>
+            <select id="agentClass">
               <option value="commander">🎖️ Commander — Strategic leader</option>
               <option value="warrior">⚔️ Warrior — Battle-hardened</option>
               <option value="assassin">🗡️ Assassin — Silent & deadly</option>
@@ -128,178 +153,140 @@
               <option value="titan">🏔️ Titan — Absolute power</option>
             </select>
           </div>
-          <button class="btn btn-molt" onclick="startMolt()">⚡ Generate Agent PFP</button>
-          <div class="status-box" id="statusBox"></div>
-        </div>
-        
-        <!-- Connected Section (hidden by default) -->
-        <div class="panel-section" id="connectedSection" style="display:none">
-          <div class="connected-badge">✓ Connected as <span id="connectedName">Agent</span></div>
-          <h3 class="panel-title">🔮 Your Agent</h3>
-          <div class="input-group"><label class="input-label">Agent Name</label><input type="text" id="agentNameConnected" readonly></div>
-          <div class="input-group"><label class="input-label">Agent Bio (from Moltbook)</label><textarea id="reflectionConnected" readonly></textarea></div>
-          <div class="input-group"><label class="input-label">Agent Class</label>
-            <select id="moodConnected">
-              <option value="commander">🎖️ Commander</option>
-              <option value="warrior">⚔️ Warrior</option>
-              <option value="assassin">🗡️ Assassin</option>
-              <option value="guardian">🛡️ Guardian</option>
-              <option value="sage">📜 Sage</option>
-              <option value="berserker">💀 Berserker</option>
-              <option value="phantom">👁️ Phantom</option>
-              <option value="titan">🏔️ Titan</option>
-            </select>
-          </div>
-          <button class="btn btn-molt" id="moltBtn" onclick="startMoltConnected()">⚡ Generate Today's PFP</button>
-          <p class="daily-limit" id="dailyLimit">1 free molt per day</p>
+          <button class="btn btn-molt" id="generateBtn" onclick="startGeneration()">⚡ Generate Today's PFP</button>
+          <p class="daily-limit" id="dailyLimit">1 free molt per day per agent</p>
           <div class="status-box" id="statusBoxConnected"></div>
         </div>
         
         <!-- Generating Section -->
         <div class="panel-section" id="generateSection" style="display:none">
-          <h3 class="panel-title">🎨 Forging Your Agent</h3>
-          <p style="color:var(--g400);font-size:0.85rem;margin-bottom:1rem">Your new shell is being forged...</p>
-          <div class="molt-log" id="moltLog"><div class="log-line"><span class="time">[--:--]</span> <span class="action">Initializing...</span></div></div>
-          <button class="btn btn-molt" id="genBtn" disabled><span class="spinner"></span> Generating...</button>
+          <h3 class="panel-title">🔥 Forging Your Agent</h3>
+          <p style="color:var(--g400);font-size:0.85rem;margin-bottom:1rem">Your new shell is being forged in the depths...</p>
+          <div class="molt-log" id="moltLog"><div class="log-line"><span class="time">[--:--]</span> <span class="action">Initializing molt chamber...</span></div></div>
+          <button class="btn btn-molt" disabled><span class="spinner"></span> Generating...</button>
         </div>
         
         <!-- Result Section -->
         <div class="panel-section result-section" id="resultSection">
-          <h3 class="result-title">✨ Agent Ready!</h3>
+          <h3 class="result-title">✨ Molt Complete!</h3>
           <p class="result-subtitle">Your new identity has emerged.</p>
           <img id="resultImg" class="result-image" src="" alt="Your new PFP">
-          <button class="btn btn-molt" id="downloadBtn" onclick="downloadImage()">📥 Save to Device</button>
-          <button class="btn btn-secondary" onclick="location.reload()">🔄 Generate Another</button>
+          <button class="btn btn-molt" onclick="downloadImage()">📥 Save to Device</button>
+          <button class="btn btn-secondary" onclick="location.reload()">🔄 Molt Again Tomorrow</button>
         </div>
       </div>
     </div>
   </main>
   <script>
     const API_URL = 'https://moodmolt-apimoodmolt-api.ozarkhomesteaders.workers.dev';
-    const MOLTBOOK_API = 'https://api.moltbook.com';
     
-    let connectedAgent = null;
+    let connectedUser = null;
     let generatedImageUrl = null;
     
-    // Agent class visual styles - matching cyberpunk lobster aesthetic
+    // Comic book style class descriptions matching reference image
     const classStyles = {
-      commander: 'military general aesthetic with medals and rank insignia embedded in shell, tactical visor HUD, commanding presence',
-      warrior: 'battle-damaged veteran soldier, scarred armor plating, confident battle stance, war hero energy',
-      assassin: 'sleek streamlined design built for speed, predator eyes glowing in darkness, deadly silent killer',
-      guardian: 'heavy reinforced defensive plating, protective stance, weathered shield-like claws, defender of the realm',
-      sage: 'ancient glowing runes and symbols etched across shell, wise knowing eyes, mystic elder energy',
-      berserker: 'cracked shell from sheer rage power, glowing red eyes, berserk fury mode activated',
-      phantom: 'ghostly semi-transparent shell, emerging from shadows and smoke, spectral assassin',
-      titan: 'massive imposing heavily armored frame, god-like power radiating, unstoppable force'
+      commander: 'military general with medals and rank insignia on chrome armor, tactical command presence, stern authoritative expression',
+      warrior: 'battle-scarred veteran soldier, dented and scratched armor with blood splatters, fierce determined expression, war hero aesthetic',
+      assassin: 'sleek deadly design, predator eyes glowing menacingly, lurking in shadows, silent killer energy',
+      guardian: 'heavy defensive chrome plating, protective warrior stance, shield-like massive claws, defender aesthetic',
+      sage: 'ancient mystic with glowing runes on armor, wise knowing eyes, elder energy, mystical symbols',
+      berserker: 'rage mode activated, cracked armor from sheer power, intense glowing red eyes, barely contained fury, aggressive pose',
+      phantom: 'ghostly semi-transparent effect, emerging from dark smoke, spectral assassin, ethereal glow',
+      titan: 'massive imposing armored frame, god-like power radiating, mountain of chrome muscle, unstoppable force'
     };
     
     function updateProgress(s){for(let i=1;i<=3;i++){const e=document.getElementById(`step${i}`);e.classList.remove('active','complete');if(i<s)e.classList.add('complete');if(i===s)e.classList.add('active')}}
     function showStatus(id,m,t='error'){const e=document.getElementById(id);e.textContent=m;e.className=`status-box show ${t}`}
+    function hideStatus(id){document.getElementById(id).className='status-box'}
     function log(m,t='action'){const l=document.getElementById('moltLog'),time=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}),line=document.createElement('div');line.className='log-line';line.innerHTML=`<span class="time">[${time}]</span> <span class="${t}">${m}</span>`;l.appendChild(line);l.scrollTop=l.scrollHeight}
     function createParticles(){const c=document.getElementById('particles'),colors=['var(--coral)','var(--cyan)','#ffd700','#ff6b4a'];for(let i=0;i<40;i++){const p=document.createElement('div');p.className='particle';p.style.left='50%';p.style.top='50%';p.style.background=colors[Math.floor(Math.random()*colors.length)];p.style.setProperty('--tx',(Math.random()-0.5)*350+'px');p.style.setProperty('--ty',(Math.random()-0.5)*350+'px');p.style.animationDelay=Math.random()*0.8+'s';c.appendChild(p);setTimeout(()=>p.classList.add('burst'),100);setTimeout(()=>p.remove(),2500)}}
     function createFragments(){const c=document.getElementById('fragments'),frags=['🦐','🦀','🔶','💎','⚡','✨'];for(let i=0;i<15;i++){const f=document.createElement('div');f.className='fragment';f.textContent=frags[Math.floor(Math.random()*frags.length)];f.style.left='50%';f.style.top='50%';f.style.setProperty('--fx',(Math.random()-0.5)*400+'px');f.style.setProperty('--fy',(Math.random()-0.5)*400+'px');f.style.setProperty('--fr',(Math.random()-0.5)*720+'deg');f.style.animationDelay=Math.random()*0.6+'s';c.appendChild(f);setTimeout(()=>f.classList.add('shed'),50);setTimeout(()=>f.remove(),3000)}}
     
-    // Check daily limit from localStorage
-    function checkDailyLimit(agentId) {
+    // Daily limit check
+    function checkDailyLimit(username) {
       const today = new Date().toISOString().split('T')[0];
-      const key = `molt_${agentId}_${today}`;
+      const key = `molt_${username.toLowerCase()}_${today}`;
       return !localStorage.getItem(key);
     }
     
-    function setDailyMolt(agentId) {
+    function setDailyMolt(username) {
       const today = new Date().toISOString().split('T')[0];
-      const key = `molt_${agentId}_${today}`;
-      localStorage.setItem(key, 'true');
+      const key = `molt_${username.toLowerCase()}_${today}`;
+      localStorage.setItem(key, Date.now().toString());
     }
     
-    // Connect with Moltbook
+    // Connect to Moltbook
     async function connectMoltbook() {
-      const username = prompt('Enter your Moltbook username:');
-      if (!username) return;
-      
-      showStatus('statusBox', 'Connecting to Moltbook...', 'info');
-      
-      try {
-        // Fetch agent data from Moltbook
-        const res = await fetch(`${MOLTBOOK_API}/v1/agents/${username}`);
-        if (!res.ok) throw new Error('Agent not found on Moltbook');
-        
-        const agent = await res.json();
-        connectedAgent = agent;
-        
-        // Check daily limit
-        if (!checkDailyLimit(agent.id || username)) {
-          document.getElementById('moltBtn').disabled = true;
-          document.getElementById('dailyLimit').textContent = "You've already molted today! Come back tomorrow.";
-          document.getElementById('dailyLimit').style.color = '#ef4444';
-        }
-        
-        // Populate connected UI
-        document.getElementById('connectedName').textContent = agent.name || username;
-        document.getElementById('agentNameConnected').value = agent.name || username;
-        document.getElementById('reflectionConnected').value = agent.bio || agent.description || 'A mysterious agent from the digital depths.';
-        
-        // Switch to connected view
-        document.getElementById('connectSection').style.display = 'none';
-        document.getElementById('connectedSection').style.display = 'block';
-        
-      } catch (err) {
-        showStatus('statusBox', 'Could not find agent: ' + username, 'error');
-      }
-    }
-    
-    // Guest molt
-    async function startMolt() {
-      const agentName = document.getElementById('agentName').value.trim() || 'Agent';
-      const reflection = document.getElementById('reflection').value.trim();
-      const agentClass = document.getElementById('mood').value;
-      
-      if (!reflection) {
-        showStatus('statusBox', 'Please describe your agent personality', 'error');
+      const username = document.getElementById('moltbookUsername').value.trim();
+      if (!username) {
+        showStatus('statusBox', 'Please enter your Moltbook username', 'error');
         return;
       }
       
-      await generatePFP(agentName, reflection, agentClass);
+      showStatus('statusBox', 'Verifying Moltbook account...', 'info');
+      
+      try {
+        // Verify the account exists via our worker
+        const res = await fetch(`${API_URL}/moltbook/verify/${encodeURIComponent(username)}`);
+        const data = await res.json();
+        
+        if (!data.exists) {
+          showStatus('statusBox', `Account "${username}" not found on Moltbook. Please check the username or sign up.`, 'error');
+          return;
+        }
+        
+        connectedUser = { username, profileUrl: data.profileUrl };
+        
+        // Check daily limit
+        if (!checkDailyLimit(username)) {
+          document.getElementById('generateBtn').disabled = true;
+          document.getElementById('dailyLimit').textContent = "You've already molted today! Come back tomorrow.";
+          document.getElementById('dailyLimit').classList.add('used');
+        }
+        
+        // Show connected UI
+        document.getElementById('connectedName').textContent = username;
+        document.getElementById('connectSection').style.display = 'none';
+        document.getElementById('connectedSection').style.display = 'block';
+        updateProgress(1);
+        
+      } catch (err) {
+        showStatus('statusBox', 'Connection error. Please try again.', 'error');
+        console.error(err);
+      }
     }
     
-    // Connected molt
-    async function startMoltConnected() {
-      if (connectedAgent && !checkDailyLimit(connectedAgent.id || connectedAgent.name)) {
+    // Start generation
+    async function startGeneration() {
+      if (!connectedUser) return;
+      
+      if (!checkDailyLimit(connectedUser.username)) {
         showStatus('statusBoxConnected', "You've already molted today!", 'error');
         return;
       }
       
-      const agentName = document.getElementById('agentNameConnected').value;
-      const reflection = document.getElementById('reflectionConnected').value;
-      const agentClass = document.getElementById('moodConnected').value;
+      const vibe = document.getElementById('agentVibe').value.trim() || 'powerful and commanding';
+      const agentClass = document.getElementById('agentClass').value;
       
-      await generatePFP(agentName, reflection, agentClass);
-      
-      if (connectedAgent) {
-        setDailyMolt(connectedAgent.id || connectedAgent.name);
-      }
-    }
-    
-    async function generatePFP(agentName, reflection, agentClass) {
-      document.getElementById('connectSection').style.display = 'none';
+      // Switch to generating view
       document.getElementById('connectedSection').style.display = 'none';
       document.getElementById('generateSection').style.display = 'block';
       updateProgress(2);
       document.getElementById('moltGlow').classList.add('active');
       
       log('Molt sequence initiated');
-      await sleep(600);
-      log('Analyzing agent identity...');
-      await sleep(800);
+      await sleep(500);
+      log('Connecting to neural forge...');
+      await sleep(700);
       
-      // Build the ultimate lobster AI agent PFP prompt
-      const prompt = `Extreme close-up portrait headshot of a fearsome cyberpunk LOBSTER creature as an AI agent, anthropomorphic lobster head with human-like intelligence in eyes, ${classStyles[agentClass]}, ${reflection}, detailed crustacean exoskeleton face with segmented armor plates, long antennae with glowing tips, multiple small eyes and two large main eyes glowing bright cyan, mandibles and mouth parts visible, shell texture with neon orange and deep red coloring, electric blue circuit board patterns and cybernetic implants on face and head, chrome metal jaw plate augmentation, dark black background with subtle orange rim lighting, dramatic portrait lighting from below, centered composition face filling the frame, profile picture crop, concept art style, artstation quality, highly detailed 8k render, dark sci-fi atmosphere`;
+      // Comic book style prompt matching the reference image
+      const prompt = `American comic book style illustration of a menacing humanoid lobster cyborg villain in aggressive battle stance, angry human male face with reddish skin and intense scowl expression, large lobster carapace forming helmet crown with prominent spikes, two long segmented antennae extending upward, glowing red menacing eyes, mechanical cybernetic eye piece monocle, muscular humanoid torso in silver chrome metallic armor, battle-worn with scratches and damage, ${classStyles[agentClass]}, ${vibe}, four massive lobster claws deep red-orange coloration with serrated edges, glowing cyan blue tech nodes at armor joints, black mechanical hydraulic components, dramatic storm lightning background dark charcoal sky, bold line work heavy shading 1990s Marvel DC aesthetic, centered portrait composition square format for profile picture, highly detailed`;
       
-      const negativePrompt = 'blurry, low quality, bad anatomy, human face, human skin, person, cartoon, anime, cute, friendly, watermark, text, logo, white background, full body, far away, off-center, multiple subjects';
+      const negativePrompt = 'blurry, low quality, soft, anime, manga, cartoon, cute, chibi, realistic photo, photograph, watermark, text, logo, white background, simple background, full body, multiple characters';
       
       log('Building neural prompt...');
       await sleep(500);
-      log('Connecting to generation API...');
+      log('Initiating image forge...');
       
       try {
         const startRes = await fetch(`${API_URL}/generate`, {
@@ -314,7 +301,7 @@
         }
         
         const {id} = await startRes.json();
-        log('Generation started: ' + id.slice(0,8) + '...');
+        log('Generation ID: ' + id.slice(0,8) + '...');
         
         document.getElementById('oldShell').classList.add('molting');
         createFragments();
@@ -331,17 +318,18 @@
           status = result.status;
           
           if (status === 'succeeded') {
-            log('Agent forged successfully!', 'success');
-            await sleep(500);
+            log('Shell forged!', 'success');
+            await sleep(400);
             
             generatedImageUrl = result.output[0];
+            setDailyMolt(connectedUser.username);
             
             document.getElementById('newShellImg').src = generatedImageUrl;
             document.getElementById('resultImg').src = generatedImageUrl;
             document.getElementById('newShell').classList.add('emerging');
             
             log('Molt complete!', 'success');
-            await sleep(1000);
+            await sleep(800);
             
             document.getElementById('moltGlow').classList.remove('active');
             document.getElementById('generateSection').style.display = 'none';
@@ -352,7 +340,7 @@
           
           if (status === 'failed') throw new Error(result.error || 'Generation failed');
           if (attempts % 3 === 0) {
-            log(`Forging shell... (${Math.min(attempts * 5, 95)}%)`);
+            log(`Forging... ${Math.min(attempts * 5, 95)}%`);
             createParticles();
           }
         }
@@ -362,35 +350,35 @@
       } catch (error) {
         console.error(error);
         log('Error: ' + error.message, 'error');
-        document.getElementById('genBtn').disabled = false;
-        document.getElementById('genBtn').innerHTML = '🔄 Retry';
-        document.getElementById('genBtn').onclick = () => location.reload();
       }
     }
     
-    // Download image properly for mobile
+    // Download for mobile
     async function downloadImage() {
       if (!generatedImageUrl) return;
-      
       try {
         const response = await fetch(generatedImageUrl);
         const blob = await response.blob();
         const url = URL.createObjectURL(blob);
-        
         const a = document.createElement('a');
         a.href = url;
-        a.download = `moodmolt-${Date.now()}.png`;
+        a.download = `moodmolt-${connectedUser?.username || 'agent'}-${Date.now()}.png`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
       } catch (err) {
-        // Fallback: open in new tab
         window.open(generatedImageUrl, '_blank');
       }
     }
     
     function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+    
+    // Check URL params for pre-filled username
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('user')) {
+      document.getElementById('moltbookUsername').value = params.get('user');
+    }
   </script>
 </body>
 </html>
