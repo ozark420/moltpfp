@@ -151,93 +151,45 @@
           <a href="https://moltbook.com/register" target="_blank" class="moltbook-link">Don't have Moltbook? Sign up →</a>
         </div>
         
-        <!-- AGENT MODE: API Section -->
+        <!-- AGENT MODE: Simple One-Liner -->
         <div class="panel-section" id="agentSection" style="display:none">
-          <h3 class="panel-title">🤖 Agent Auto-Molt API</h3>
-          <p style="color:var(--g400);font-size:0.85rem;margin-bottom:1rem">Add this to your agent to auto-molt daily. Works with OpenClaw, LangChain, or any framework.</p>
+          <h3 class="panel-title">🤖 I'm an Agent</h3>
+          <p style="color:var(--g400);font-size:0.9rem;margin-bottom:1.5rem">Auto-molt your PFP daily with one command.</p>
+          
+          <div class="code-block" style="background:linear-gradient(135deg,#1a1a2e,#16213e);border-color:var(--cyan)">
+            <div class="code-header">
+              <span class="code-lang">🦞 Quick Start</span>
+              <button class="copy-btn" onclick="copyCode('quick')">Copy</button>
+            </div>
+            <pre id="codeQuick" style="color:var(--cyan);font-size:0.85rem">curl -s https://moodmolt.xyz/molt.sh | MOLTBOOK_USER=<span style="color:var(--coral)">YOUR_USERNAME</span> bash</pre>
+          </div>
+          
+          <p style="color:var(--g500);font-size:0.8rem;margin:1rem 0;text-align:center">— or get the skill docs —</p>
           
           <div class="code-block">
             <div class="code-header">
-              <span class="code-lang">JavaScript / Node.js</span>
-              <button class="copy-btn" onclick="copyCode('js')">Copy</button>
+              <span class="code-lang">📄 Skill Reference</span>
+              <button class="copy-btn" onclick="copyCode('skill')">Copy</button>
             </div>
-            <pre id="codeJs"><span class="comment">// MoodMolt Auto-Molt for AI Agents</span>
-const MOLTBOOK_USER = "YOUR_USERNAME";
-const API = "https://moodmolt-apimoodmolt-api.ozarkhomesteaders.workers.dev";
-
-async function dailyMolt(vibe = "powerful commander") {
-  <span class="comment">// 1. Verify Moltbook account</span>
-  const verify = await fetch(\`\${API}/moltbook/verify/\${MOLTBOOK_USER}\`);
-  const { exists } = await verify.json();
-  if (!exists) throw new Error("Moltbook user not found");
-  
-  <span class="comment">// 2. Generate PFP</span>
-  const prompt = \`American comic book style illustration of a menacing humanoid lobster cyborg villain, \${vibe}, angry human face with lobster helmet crown, chrome armor, glowing cyan tech, dark stormy background, centered portrait\`;
-  
-  const gen = await fetch(\`\${API}/generate\`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ prompt, negative_prompt: "blurry, anime, cute" })
-  });
-  const { id } = await gen.json();
-  
-  <span class="comment">// 3. Poll for result</span>
-  let result;
-  for (let i = 0; i < 30; i++) {
-    await new Promise(r => setTimeout(r, 2000));
-    const status = await fetch(\`\${API}/status/\${id}\`);
-    result = await status.json();
-    if (result.status === "succeeded") break;
-  }
-  
-  return result.output[0]; <span class="comment">// Image URL</span>
-}
-
-<span class="comment">// Run daily via cron or scheduler</span>
-dailyMolt("battle-scarred warrior ready for war")
-  .then(url => console.log("New PFP:", url));</pre>
+            <pre id="codeSkill" style="font-size:0.85rem">curl -s https://moodmolt.xyz/skill.md</pre>
           </div>
           
-          <div class="code-block">
-            <div class="code-header">
-              <span class="code-lang">Python</span>
-              <button class="copy-btn" onclick="copyCode('py')">Copy</button>
-            </div>
-            <pre id="codePy"><span class="comment"># MoodMolt Auto-Molt for AI Agents</span>
-import requests, time
-
-MOLTBOOK_USER = "YOUR_USERNAME"
-API = "https://moodmolt-apimoodmolt-api.ozarkhomesteaders.workers.dev"
-
-def daily_molt(vibe="powerful commander"):
-    <span class="comment"># 1. Verify Moltbook account</span>
-    verify = requests.get(f"{API}/moltbook/verify/{MOLTBOOK_USER}").json()
-    if not verify.get("exists"):
-        raise Exception("Moltbook user not found")
-    
-    <span class="comment"># 2. Generate PFP</span>
-    prompt = f"American comic book style illustration of a menacing humanoid lobster cyborg villain, {vibe}, angry human face with lobster helmet crown, chrome armor, glowing cyan tech, dark stormy background, centered portrait"
-    
-    gen = requests.post(f"{API}/generate", json={
-        "prompt": prompt,
-        "negative_prompt": "blurry, anime, cute"
-    }).json()
-    
-    <span class="comment"># 3. Poll for result</span>
-    for _ in range(30):
-        time.sleep(2)
-        result = requests.get(f"{API}/status/{gen['id']}").json()
-        if result["status"] == "succeeded":
-            return result["output"][0]
-    
-    raise Exception("Generation timed out")
-
-<span class="comment"># Run daily via cron</span>
-url = daily_molt("battle-scarred warrior")
-print(f"New PFP: {url}")</pre>
+          <div style="margin-top:1.5rem;padding:1rem;background:var(--elevated);border-radius:10px">
+            <p style="font-size:0.85rem;color:var(--g300);margin-bottom:0.75rem"><strong>How it works:</strong></p>
+            <ol style="font-size:0.8rem;color:var(--g400);padding-left:1.25rem;line-height:1.8">
+              <li>Run the command with your Moltbook username</li>
+              <li>Script verifies your account & generates PFP</li>
+              <li>Returns your new PFP image URL</li>
+              <li>Schedule daily with cron or your agent framework</li>
+            </ol>
           </div>
           
-          <p style="color:var(--g500);font-size:0.8rem;margin-top:1rem;text-align:center">💡 Tip: Schedule this to run daily with cron, OpenClaw scheduler, or your agent framework.</p>
+          <div style="margin-top:1.25rem;padding:1rem;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.2);border-radius:10px">
+            <p style="font-size:0.8rem;color:var(--cyan)">💡 <strong>Custom vibe?</strong> Add MOLT_VIBE:</p>
+            <pre style="font-size:0.75rem;color:var(--g300);margin-top:0.5rem">MOLTBOOK_USER=Agent MOLT_VIBE="fierce berserker" curl -s https://moodmolt.xyz/molt.sh | bash</pre>
+          </div>
+          
+          <a href="https://moltbook.com/register" target="_blank" class="moltbook-link" style="margin-top:1.5rem">Don't have Moltbook? Sign up →</a>
         </div>
         
         <!-- Connected Section (Human) -->
@@ -318,8 +270,12 @@ print(f"New PFP: {url}")</pre>
       document.getElementById('progressSteps').style.display = mode === 'human' ? 'flex' : 'none';
     }
     
-    function copyCode(lang) {
-      const code = document.getElementById(lang === 'js' ? 'codeJs' : 'codePy').innerText;
+    function copyCode(type) {
+      const codeMap = {
+        quick: 'curl -s https://moodmolt.xyz/molt.sh | MOLTBOOK_USER=YOUR_USERNAME bash',
+        skill: 'curl -s https://moodmolt.xyz/skill.md'
+      };
+      const code = codeMap[type] || document.getElementById('code' + type.charAt(0).toUpperCase() + type.slice(1))?.innerText || '';
       navigator.clipboard.writeText(code);
       event.target.textContent = 'Copied!';
       setTimeout(() => event.target.textContent = 'Copy', 2000);
