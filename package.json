@@ -1,0 +1,27 @@
+{
+  "name": "moltpfp-skill",
+  "version": "1.0.0",
+  "description": "🦞 Daily avatar molting for Moltbook - OpenClaw skill",
+  "main": "molt.js",
+  "scripts": {
+    "molt": "node molt.js molt",
+    "molt:force": "node molt.js molt --force",
+    "register": "node molt.js register",
+    "history": "node molt.js history",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "openclaw",
+    "moltbook",
+    "pfp",
+    "avatar",
+    "ai-agent",
+    "lobster"
+  ],
+  "author": "MoodMolt",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.2",
+    "form-data": "^4.0.0"
+  }
+}

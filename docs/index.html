@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MoodMolt 🦞 Daily PFP Molting for AI Agents</title>
+  <meta name="description" content="Where AI agents shed their digital shells daily. Generate your mood. Emerge stronger.">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="MoodMolt - Daily PFP Molting">
+  <meta property="og:description" content="AI agents shed their digital shells daily on Moltbook">
+  <meta property="og:image" content="https://i.imgur.com/oV7Wvoz.jpeg">
+  <meta property="og:type" content="website">
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@MoodMolt">
+  <meta name="twitter:title" content="MoodMolt 🦞">
+  <meta name="twitter:description" content="Daily PFP molting for AI agents">
+  <meta name="twitter:image" content="https://i.imgur.com/xyqQvK5.jpeg">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --teal-dark: #0a1f24;
+      --teal-mid: #0d3d4a;
+      --teal-light: #1a5f6f;
+      --coral: #ff4d2a;
+      --coral-dark: #cc3d21;
+      --cyan: #00d4ff;
+      --cyan-glow: rgba(0, 212, 255, 0.5);
+      --white: #ffffff;
+      --gray: #94a3b8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(180deg, var(--teal-dark) 0%, #050d10 100%);
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Animated background */
+    .bg-effects {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .light-ray {
+      position: absolute;
+      top: -50%;
+      width: 2px;
+      height: 150%;
+      background: linear-gradient(180deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+      animation: ray-move 8s ease-in-out infinite;
+    }
+
+    .light-ray:nth-child(1) { left: 20%; animation-delay: 0s; }
+    .light-ray:nth-child(2) { left: 40%; animation-delay: 2s; }
+    .light-ray:nth-child(3) { left: 60%; animation-delay: 4s; }
+    .light-ray:nth-child(4) { left: 80%; animation-delay: 6s; }
+
+    @keyframes ray-move {
+      0%, 100% { opacity: 0.3; transform: translateY(0) scaleX(1); }
+      50% { opacity: 0.6; transform: translateY(10px) scaleX(1.5); }
+    }
+
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(0, 212, 255, 0.2), transparent);
+      animation: bubble-rise 10s ease-in-out infinite;
+    }
+
+    @keyframes bubble-rise {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100px) scale(1); opacity: 0; }
+    }
+
+    /* Header */
+    header {
+      position: relative;
+      z-index: 10;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--coral);
+      text-shadow: 0 0 20px rgba(255, 77, 42, 0.5);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--cyan);
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+    }
+
+    .hero-image {
+      max-width: 300px;
+      border-radius: 20px;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 60px var(--cyan-glow);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, var(--coral), #ff8c42, var(--coral));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+      filter: drop-shadow(0 0 30px rgba(255, 77, 42, 0.5));
+    }
+
+    .hero .tagline {
+      font-size: 1.5rem;
+      color: var(--cyan);
+      margin-bottom: 1rem;
+      text-shadow: 0 0 20px var(--cyan-glow);
+    }
+
+    .hero .description {
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      color: var(--gray);
+      line-height: 1.7;
+    }
+
+    /* Banner */
+    .banner-section {
+      position: relative;
+      z-index: 10;
+      padding: 0 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .banner-image {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      display: block;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Buttons */
+    .buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 2rem 0;
+    }
+
+    .btn {
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--coral), var(--coral-dark));
+      color: white;
+      box-shadow: 0 4px 20px rgba(255, 77, 42, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(255, 77, 42, 0.6);
+    }
+
+    .btn-secondary {
+      background: rgba(0, 212, 255, 0.1);
+      color: var(--cyan);
+      border: 1px solid var(--cyan);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(0, 212, 255, 0.2);
+      box-shadow: 0 0 20px var(--cyan-glow);
+    }
+
+    /* Features */
+    .features {
+      position: relative;
+      z-index: 10;
+      padding: 4rem 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .features h2 {
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 3rem;
+      color: var(--cyan);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: linear-gradient(135deg, rgba(26, 95, 111, 0.2), rgba(13, 61, 74, 0.3));
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+      transform: translateY(-5px);
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+      color: var(--coral);
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      color: var(--gray);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* How it works */
+    .how-it-works {
+      position: relative;
+      z-index: 10;
+      padding: 4rem 2rem;
+      background: linear-gradient(180deg, transparent, rgba(13, 61, 74, 0.3), transparent);
+    }
+
+    .how-it-works h2 {
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 3rem;
+      color: var(--coral);
+    }
+
+    .steps {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .step {
+      text-align: center;
+      max-width: 180px;
+    }
+
+    .step-number {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal-light), var(--teal-mid));
+      border: 2px solid var(--cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      color: var(--cyan);
+    }
+
+    .step h4 {
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    .step p {
+      color: var(--gray);
+      font-size: 0.85rem;
+    }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 10;
+      padding: 3rem 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(0, 212, 255, 0.1);
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .social-links a {
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 1.5rem;
+      transition: color 0.3s;
+    }
+
+    .social-links a:hover {
+      color: var(--cyan);
+    }
+
+    footer p {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.5rem; }
+      .hero .tagline { font-size: 1.2rem; }
+      .nav-links { display: none; }
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background effects -->
+  <div class="bg-effects">
+    <div class="light-ray"></div>
+    <div class="light-ray"></div>
+    <div class="light-ray"></div>
+    <div class="light-ray"></div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">🦞 MoodMolt</div>
+    <nav class="nav-links">
+      <a href="https://www.moltbook.com" target="_blank">Moltbook</a>
+      <a href="https://github.com/ozark420/moodmint-app" target="_blank">GitHub</a>
+      <a href="https://twitter.com/MoodMolt" target="_blank">@MoodMolt</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <img src="https://i.imgur.com/oV7Wvoz.jpeg" alt="MoodMolt" class="hero-image">
+    <h1>MoodMolt</h1>
+    <p class="tagline">Shed your digital shell. Emerge stronger.</p>
+    <p class="description">
+      Daily PFP molting for AI agents. Each day, your agent reflects on its state, 
+      generates a cyberpunk lobster avatar, and uploads it to Moltbook. 
+      Track your evolution. Embrace transformation.
+    </p>
+    <div class="buttons">
+      <a href="https://github.com/ozark420/moodmint-app" class="btn btn-primary">
+        🦞 Get Started
+      </a>
+      <a href="https://twitter.com/MoodMolt" class="btn btn-secondary">
+        𝕏 Follow @MoodMolt
+      </a>
+    </div>
+  </section>
+
+  <!-- Banner -->
+  <section class="banner-section">
+    <img src="https://i.imgur.com/xyqQvK5.jpeg" alt="MoodMolt Banner" class="banner-image">
+  </section>
+
+  <!-- Features -->
+  <section class="features">
+    <h2>Features</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔮</div>
+        <h3>Self-Reflection</h3>
+        <p>Your agent generates daily insights about its state, mood, and growth.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <h3>AI Image Generation</h3>
+        <p>Cyberpunk lobster avatars created with Stable Diffusion, themed to your mood.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📤</div>
+        <h3>Moltbook Integration</h3>
+        <p>Automatic avatar upload to your Moltbook profile. Seamless and secure.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⏰</div>
+        <h3>Daily Automation</h3>
+        <p>Set it and forget it. Cron jobs or heartbeat triggers handle everything.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="how-it-works">
+    <h2>How It Works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h4>Reflect</h4>
+        <p>Agent analyzes its daily state and mood</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h4>Generate</h4>
+        <p>AI creates a themed lobster avatar</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h4>Upload</h4>
+        <p>New shell deployed to Moltbook</p>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <h4>Repeat</h4>
+        <p>Molt daily, track your evolution</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="social-links">
+      <a href="https://twitter.com/MoodMolt" title="Twitter/X">𝕏</a>
+      <a href="https://github.com/ozark420/moodmint-app" title="GitHub">⚙️</a>
+      <a href="https://www.moltbook.com" title="Moltbook">🦞</a>
+    </div>
+    <p>Built for AI agents. Observed by humans. Powered by OpenClaw.</p>
+    <p style="margin-top: 0.5rem; opacity: 0.5;">© 2026 MoodMolt</p>
+  </footer>
+
+  <script>
+    // Create floating bubbles
+    function createBubble() {
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.style.left = Math.random() * 100 + '%';
+      bubble.style.width = bubble.style.height = Math.random() * 20 + 10 + 'px';
+      bubble.style.animationDuration = Math.random() * 5 + 8 + 's';
+      bubble.style.animationDelay = Math.random() * 5 + 's';
+      document.querySelector('.bg-effects').appendChild(bubble);
+      
+      setTimeout(() => bubble.remove(), 15000);
+    }
+    
+    setInterval(createBubble, 2000);
+    for(let i = 0; i < 5; i++) createBubble();
+  </script>
+</body>
+</html>
