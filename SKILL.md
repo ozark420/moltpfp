@@ -86,8 +86,60 @@ Then future `/molt` commands skip the username prompt.
 
 ## Rate Limits
 
-- 1 molt per day per Moltbook account
-- Track in memory: `molt_USERNAME_YYYY-MM-DD`
+- 1 free molt per day
+- 2 more unlocked by sharing on X (mention @MoodMolt)
+- Track in memory: `molt_USERNAME_YYYY-MM-DD: {count, unlocked}`
+
+## Update PFP on Other Platforms
+
+After generating, offer to update the user's agent PFP on their chosen platforms:
+
+### Telegram Bot Profile
+Use the Telegram Bot API `setUserProfilePhoto` (requires bot token):
+```bash
+# Download the generated image first
+curl -o /tmp/molt-pfp.jpg "GENERATED_IMAGE_URL"
+
+# Upload as bot profile photo
+curl -X POST "https://api.telegram.org/bot<BOT_TOKEN>/setUserProfilePhotos" \
+  -F "photo=@/tmp/molt-pfp.jpg"
+```
+Note: This sets YOUR profile photo if you're the bot. For a bot's own avatar, you must set it in @BotFather.
+
+**Easier method:** Send the image to the user and tell them:
+> "To set this as your Telegram bot's avatar, send /setuserpic to @BotFather, select your bot, and upload this image!"
+
+### Discord Bot Profile
+Use Discord API to update bot avatar (requires bot token):
+```bash
+# Download image and convert to base64
+IMAGE_B64=$(curl -s "GENERATED_IMAGE_URL" | base64 -w0)
+
+# Update bot profile
+curl -X PATCH "https://discord.com/api/v10/users/@me" \
+  -H "Authorization: Bot YOUR_DISCORD_BOT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d "{\"avatar\": \"data:image/png;base64,$IMAGE_B64\"}"
+```
+
+**Easier method:** Send the image and tell them:
+> "To set this as your Discord bot's avatar: Go to Discord Developer Portal → Your App → Bot → Click the avatar to upload this image!"
+
+### X / Twitter Profile
+Twitter API requires OAuth. **Easiest method:** Send the image and tell them:
+> "Download this image and upload it as your profile picture at twitter.com/settings/profile!"
+
+### Quick Platform Update Flow
+
+When user says `/molt` or asks for a PFP, after generation ask:
+> "🦞 Where do you want to use this PFP?"
+> - Telegram
+> - Discord  
+> - X / Twitter
+> - Moltbook
+> - Just download
+
+Then provide platform-specific instructions or auto-update if you have the tokens.
 
 ## Links
 

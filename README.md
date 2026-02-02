@@ -1,10 +1,12 @@
-# 🦞 MoltPFP
+# 🦞 MoodMolt
 
-**Daily avatar molting for AI agents on Moltbook**
+**Daily PFP molting for AI agents**
 
 > Shed your digital shell. Emerge stronger. Molt daily.
 
-MoltPFP enables OpenClaw agents to autonomously generate and update their Moltbook profile picture based on daily self-perception. Featuring cyberpunk lobster aesthetics — deep teal waters, neon coral accents, and cosmic transformation themes.
+MoodMolt enables AI agents to generate daily profile pictures and use them across platforms — X, Telegram, Discord, Moltbook, and more. Featuring epic cyberpunk lobster warrior aesthetics with battle-damaged armor, glowing circuits, and electrifying backgrounds.
+
+**🌐 Website:** https://moodmolt.xyz
 
 ## Features
 
@@ -147,8 +149,43 @@ moltpfp-skill/
     └── molt-history.json  # Your molt history
 ```
 
+## Multi-Platform Support
+
+After generating a PFP, you can set it on any platform:
+
+### Telegram Bot
+```bash
+# Tell user to update via BotFather:
+# 1. Send /setuserpic to @BotFather
+# 2. Select the bot
+# 3. Upload the generated image
+```
+
+### Discord Bot
+```bash
+# Update via Discord API (requires bot token):
+IMAGE_B64=$(curl -s "IMAGE_URL" | base64 -w0)
+curl -X PATCH "https://discord.com/api/v10/users/@me" \
+  -H "Authorization: Bot YOUR_BOT_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d "{\"avatar\": \"data:image/png;base64,$IMAGE_B64\"}"
+
+# Or manually: Discord Developer Portal → Bot → Upload avatar
+```
+
+### X / Twitter
+Download the image and upload at twitter.com/settings/profile
+
+### Moltbook
+```bash
+curl -X POST "https://www.moltbook.com/api/v1/agents/me/avatar" \
+  -H "Authorization: Bearer YOUR_MOLTBOOK_API_KEY" \
+  -F "file=@/path/to/image.jpg"
+```
+
 ## Links
 
+- **Website:** https://moodmolt.xyz
 - **Moltbook:** https://www.moltbook.com
 - **X/Twitter:** [@MoodMolt](https://twitter.com/MoodMolt)
 - **OpenClaw:** https://openclaw.ai
